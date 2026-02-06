@@ -63,7 +63,7 @@ TENSOR-Framework/
 
 ### Machine-readable release contract
 
-* `releases/manifest.json` is the stable catalog for website/Graph Studio clients.
+* `releases/manifest.json` is the stable catalog for client applications.
 * `releases/core/graphs/latest/tensor.core.graph.json` and `releases/core/schemas/latest/tensor.core.schema.json` are pointer artifacts for default client loading.
 * `releases/checksums.json` provides sha256 integrity metadata for all JSON release artifacts under `releases/`.
 
@@ -71,6 +71,8 @@ TENSOR-Framework/
 
 * Core (`releases/core/**`) remains vendor-neutral and defines canonical investigative semantics.
 * Business logic belongs in overlays (`extensions/`, `vendors/`, `orgs/`) that extend Core without redefining Core meaning.
+* Core flow is explicit via `entryNodeIds`; overlays may add workflow logic but must not redefine investigative questions/branches.
+* Extension keys use namespaced identifiers (`<namespace>:<field>`) to prevent business-process metadata from leaking into Core semantics.
 * Compatibility/deprecation requirements are defined in `standards/compatibility-policy.md`.
 
 ### Contributing extensions

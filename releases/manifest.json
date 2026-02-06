@@ -1,8 +1,8 @@
 {
   "channel": "stable",
-  "generatedAt": "2026-02-06T04:53:07Z",
-  "latestGraphVersion": "0.20250813",
-  "latestSchemaVersion": "0.20250813",
+  "generatedAt": "2026-02-06T05:30:39Z",
+  "latestGraphVersion": "0.20260206",
+  "latestSchemaVersion": "0.20260206",
   "releases": [
     {
       "id": "core-0.20250519b",
@@ -28,6 +28,20 @@
       "notes": [
         "Current stable core release for machine-readable clients.",
         "Latest graph/schema pointers resolve to this release."
+      ]
+    },
+    {
+      "id": "core-0.20260206",
+      "displayName": "TENSOR Core v0.20260206",
+      "releasedAt": "2026-02-06",
+      "graphVersion": "0.20260206",
+      "schemaVersion": "0.20260206",
+      "graphPath": "releases/core/graphs/v0.20260206/tensor.core.graph.json",
+      "schemaPath": "releases/core/schemas/v0.20260206/tensor.core.schema.json",
+      "notes": [
+        "Investigation-only Core release with explicit entry nodes and stronger semantic integrity checks.",
+        "Adds flat canonical node/edge format while preserving wrapped compatibility in schema.",
+        "Enforces namespaced extensions and nodeId-constrained edge endpoints."
       ]
     }
   ]

@@ -9,6 +9,8 @@
 - **Core layer**: canonical, stable investigative primitives and relationships.
 - **Overlay layers**: additive constraints, fields, mappings, and workflow data for extensions/vendors/orgs.
 - Overlay layers may reference Core nodes/edges and add metadata, but they cannot remove or redefine Core semantics.
+- Core releases must provide explicit investigation entry points (`entryNodeIds`), and Core nodes must be reachable from at least one entry point.
+- Extension metadata keys in Core (`extensions`) must be namespaced (`<namespace>:<field>`). Non-namespaced business/process fields belong in overlays.
 
 ## Versioning
 - Version format: `<MAJOR>.<YYYYMMDD>[letter]`.

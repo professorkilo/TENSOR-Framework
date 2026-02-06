@@ -8,6 +8,7 @@ import hashlib
 import json
 import re
 import sys
+from collections import defaultdict, deque
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -38,6 +39,10 @@ RELEASE_KEYS = [
 
 VERSION_RE = re.compile(r"^\d+\.\d{8}[a-z]?$")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+NODE_ID_RE = re.compile(r"^Q[1-9]\d*$")
+EDGE_ID_RE = re.compile(r"^(Q[1-9]\d*)-(yes|no|unknown)-(Q[1-9]\d*)$")
+DECISIONS = {"yes", "no", "unknown"}
+ENFORCEMENT_VERSION = (0, 20260206, "")
 
 
 def load_json(path: Path) -> Any:
@@ -60,6 +65,44 @@ def is_iso_datetime(value: str) -> bool:
     except ValueError:
         return False
     return True
+
+
+def parse_version(value: str) -> tuple[int, int, str] | None:
+    if not isinstance(value, str):
+        return None
+    match = re.fullmatch(r"^(\d+)\.(\d{8})([a-z]?)$", value)
+    if not match:
+        return None
+    major = int(match.group(1))
+    yyyymmdd = int(match.group(2))
+    rev = match.group(3) or ""
+    return (major, yyyymmdd, rev)
+
+
+def version_at_least(value: str, threshold: tuple[int, int, str]) -> bool:
+    parsed = parse_version(value)
+    if parsed is None:
+        return False
+    return parsed >= threshold
+
+
+def node_sort_key(node_id: str) -> tuple[int, str]:
+    try:
+        return (int(node_id[1:]), node_id)
+    except (ValueError, IndexError):
+        return (sys.maxsize, node_id)
+
+
+def unwrap_graph_item(item: Any) -> tuple[dict[str, Any] | None, str]:
+    """Return payload and shape marker ('flat' or 'wrapped')."""
+    if not isinstance(item, dict):
+        return (None, "invalid")
+    if "data" in item:
+        payload = item.get("data")
+        if isinstance(payload, dict):
+            return (payload, "wrapped")
+        return (None, "invalid")
+    return (item, "flat")
 
 
 def compute_release_checksums() -> dict[str, str]:
@@ -260,6 +303,346 @@ def validate_manifest(manifest: Any) -> list[str]:
     return errors
 
 
+def schema_supports_entry_nodes(schema: Any) -> bool:
+    if not isinstance(schema, dict):
+        return False
+    properties = schema.get("properties")
+    if not isinstance(properties, dict):
+        return False
+    return "entryNodeIds" in properties
+
+
+def schema_enforces_source_target_node_refs(schema: Any) -> bool:
+    found_source = False
+    found_target = False
+
+    def walk(value: Any) -> None:
+        nonlocal found_source, found_target
+        if isinstance(value, dict):
+            for key, nested in value.items():
+                if (
+                    key == "source"
+                    and isinstance(nested, dict)
+                    and nested.get("$ref") == "#/$defs/nodeId"
+                ):
+                    found_source = True
+                if (
+                    key == "target"
+                    and isinstance(nested, dict)
+                    and nested.get("$ref") == "#/$defs/nodeId"
+                ):
+                    found_target = True
+                walk(nested)
+        elif isinstance(value, list):
+            for nested in value:
+                walk(nested)
+
+    walk(schema)
+    return found_source and found_target
+
+
+def schema_supports_flat_and_wrapped_items(schema: Any) -> bool:
+    if not isinstance(schema, dict):
+        return False
+    text = json.dumps(schema, sort_keys=True)
+    return all(
+        token in text
+        for token in (
+            "#/$defs/nodeFlat",
+            "#/$defs/nodeWrapped",
+            "#/$defs/edgeFlat",
+            "#/$defs/edgeWrapped",
+        )
+    )
+
+
+def schema_enforces_namespaced_extensions(schema: Any) -> bool:
+    if not isinstance(schema, dict):
+        return False
+    defs = schema.get("$defs")
+    if not isinstance(defs, dict):
+        return False
+    ext_obj = defs.get("extensionsObject")
+    if not isinstance(ext_obj, dict):
+        return False
+    patterns = ext_obj.get("patternProperties")
+    if not isinstance(patterns, dict):
+        return False
+    return any(":" in pattern for pattern in patterns)
+
+
+def validate_graph_semantics(
+    graph: Any,
+    schema: Any,
+    release: dict[str, Any],
+    context: str,
+) -> list[str]:
+    errors: list[str] = []
+    graph_version = release.get("graphVersion")
+    schema_version = release.get("schemaVersion")
+
+    if not isinstance(graph, dict):
+        return [f"{context}.graphPath must contain a JSON object root."]
+
+    if graph.get("namespace") != "tensor":
+        errors.append(f"{context}.graphPath must use namespace='tensor'.")
+    if graph.get("product") != "core":
+        errors.append(f"{context}.graphPath must use product='core'.")
+
+    if graph.get("version") != graph_version:
+        errors.append(
+            f"{context}.graphPath version ({graph.get('version')!r}) does not match graphVersion ({graph_version!r})."
+        )
+    if graph.get("schemaVersion") != schema_version:
+        errors.append(
+            f"{context}.graphPath schemaVersion ({graph.get('schemaVersion')!r}) does not match schemaVersion ({schema_version!r})."
+        )
+
+    if not is_iso_datetime(graph.get("generatedAt")):
+        errors.append(f"{context}.graphPath generatedAt must be an ISO 8601 datetime with timezone.")
+
+    nodes_raw = graph.get("nodes")
+    edges_raw = graph.get("edges")
+
+    if not isinstance(nodes_raw, list) or not nodes_raw:
+        errors.append(f"{context}.graphPath nodes must be a non-empty array.")
+        nodes_raw = []
+
+    if not isinstance(edges_raw, list):
+        errors.append(f"{context}.graphPath edges must be an array.")
+        edges_raw = []
+
+    node_ids: set[str] = set()
+    edge_ids: set[str] = set()
+    parsed_edges: list[dict[str, str]] = []
+    seen_branch_tuples: set[tuple[str, str, str]] = set()
+
+    wrapped_nodes = 0
+    for idx, raw_node in enumerate(nodes_raw):
+        payload, shape = unwrap_graph_item(raw_node)
+        if payload is None:
+            errors.append(f"{context}.graphPath nodes[{idx}] must be an object (flat or wrapped under data).")
+            continue
+        if shape == "wrapped":
+            wrapped_nodes += 1
+
+        node_id = payload.get("id")
+        if not isinstance(node_id, str):
+            errors.append(f"{context}.graphPath nodes[{idx}] id must be a string.")
+            continue
+        if not NODE_ID_RE.fullmatch(node_id):
+            errors.append(f"{context}.graphPath nodes[{idx}] id is malformed: {node_id!r}")
+            continue
+        if node_id in node_ids:
+            errors.append(f"{context}.graphPath has duplicate node id: {node_id}")
+            continue
+        node_ids.add(node_id)
+
+    wrapped_edges = 0
+    for idx, raw_edge in enumerate(edges_raw):
+        payload, shape = unwrap_graph_item(raw_edge)
+        if payload is None:
+            errors.append(f"{context}.graphPath edges[{idx}] must be an object (flat or wrapped under data).")
+            continue
+        if shape == "wrapped":
+            wrapped_edges += 1
+
+        edge_id = payload.get("id")
+        source = payload.get("source")
+        target = payload.get("target")
+        decision = payload.get("decision")
+
+        if not isinstance(edge_id, str):
+            errors.append(f"{context}.graphPath edges[{idx}] id must be a string.")
+            continue
+        if edge_id in edge_ids:
+            errors.append(f"{context}.graphPath has duplicate edge id: {edge_id}")
+            continue
+        edge_ids.add(edge_id)
+
+        if not EDGE_ID_RE.fullmatch(edge_id):
+            errors.append(f"{context}.graphPath edges[{idx}] id is malformed: {edge_id!r}")
+
+        if not isinstance(source, str):
+            errors.append(f"{context}.graphPath edges[{idx}] source must be a string.")
+            continue
+        if not isinstance(target, str):
+            errors.append(f"{context}.graphPath edges[{idx}] target must be a string.")
+            continue
+        if not isinstance(decision, str):
+            errors.append(f"{context}.graphPath edges[{idx}] decision must be a string.")
+            continue
+
+        if not NODE_ID_RE.fullmatch(source):
+            errors.append(f"{context}.graphPath edges[{idx}] source id is malformed: {source!r}")
+        if not NODE_ID_RE.fullmatch(target):
+            errors.append(f"{context}.graphPath edges[{idx}] target id is malformed: {target!r}")
+        if decision not in DECISIONS:
+            errors.append(f"{context}.graphPath edges[{idx}] decision must be one of yes/no/unknown.")
+
+        match = EDGE_ID_RE.fullmatch(edge_id)
+        if match and (source != match.group(1) or decision != match.group(2) or target != match.group(3)):
+            errors.append(
+                f"{context}.graphPath edges[{idx}] id tuple must match source/decision/target for edge {edge_id!r}."
+            )
+
+        branch_tuple = (source, decision, target)
+        if branch_tuple in seen_branch_tuples:
+            errors.append(
+                f"{context}.graphPath has duplicate branch tuple source={source}, decision={decision}, target={target}."
+            )
+        seen_branch_tuples.add(branch_tuple)
+        parsed_edges.append({"id": edge_id, "source": source, "target": target, "decision": decision})
+
+    for edge in parsed_edges:
+        if edge["source"] not in node_ids:
+            errors.append(
+                f"{context}.graphPath edge {edge['id']!r} references missing source node: {edge['source']}"
+            )
+        if edge["target"] not in node_ids:
+            errors.append(
+                f"{context}.graphPath edge {edge['id']!r} references missing target node: {edge['target']}"
+            )
+
+    requires_new_semantics = (
+        isinstance(graph_version, str) and version_at_least(graph_version, ENFORCEMENT_VERSION)
+    )
+
+    entry_nodes = graph.get("entryNodeIds")
+    if requires_new_semantics and not schema_supports_entry_nodes(schema):
+        errors.append(f"{context}.schemaPath must define properties.entryNodeIds.")
+    if requires_new_semantics and not schema_enforces_source_target_node_refs(schema):
+        errors.append(
+            f"{context}.schemaPath must constrain edge source/target to nodeId references."
+        )
+    if requires_new_semantics and not schema_supports_flat_and_wrapped_items(schema):
+        errors.append(
+            f"{context}.schemaPath must support both flat and wrapped node/edge formats during migration."
+        )
+    if requires_new_semantics and not schema_enforces_namespaced_extensions(schema):
+        errors.append(
+            f"{context}.schemaPath must enforce namespaced extension keys (<namespace>:<field>)."
+        )
+    if requires_new_semantics and wrapped_nodes > 0:
+        errors.append(
+            f"{context}.graphPath must use flat node objects for canonical Core releases (wrapped nodes found: {wrapped_nodes})."
+        )
+    if requires_new_semantics and wrapped_edges > 0:
+        errors.append(
+            f"{context}.graphPath must use flat edge objects for canonical Core releases (wrapped edges found: {wrapped_edges})."
+        )
+
+    if requires_new_semantics and "entryNodeIds" not in graph:
+        errors.append(f"{context}.graphPath must define entryNodeIds for this release.")
+    elif entry_nodes is not None:
+        if not isinstance(entry_nodes, list) or not entry_nodes:
+            errors.append(f"{context}.graphPath entryNodeIds must be a non-empty array.")
+        else:
+            seen_entries: set[str] = set()
+            valid_entries: list[str] = []
+            for idx, entry_node in enumerate(entry_nodes):
+                if not isinstance(entry_node, str):
+                    errors.append(
+                        f"{context}.graphPath entryNodeIds[{idx}] must be a string node id."
+                    )
+                    continue
+                if not NODE_ID_RE.fullmatch(entry_node):
+                    errors.append(
+                        f"{context}.graphPath entryNodeIds[{idx}] is malformed: {entry_node!r}"
+                    )
+                    continue
+                if entry_node in seen_entries:
+                    errors.append(
+                        f"{context}.graphPath entryNodeIds contains duplicate id: {entry_node}"
+                    )
+                    continue
+                seen_entries.add(entry_node)
+                if entry_node not in node_ids:
+                    errors.append(
+                        f"{context}.graphPath entryNodeIds references missing node: {entry_node}"
+                    )
+                    continue
+                valid_entries.append(entry_node)
+
+            if valid_entries and node_ids:
+                adjacency: dict[str, list[str]] = defaultdict(list)
+                for edge in parsed_edges:
+                    if edge["source"] in node_ids and edge["target"] in node_ids:
+                        adjacency[edge["source"]].append(edge["target"])
+
+                reachable: set[str] = set()
+                queue: deque[str] = deque()
+                for entry in valid_entries:
+                    if entry not in reachable:
+                        reachable.add(entry)
+                        queue.append(entry)
+
+                while queue:
+                    current = queue.popleft()
+                    for nxt in adjacency.get(current, []):
+                        if nxt not in reachable:
+                            reachable.add(nxt)
+                            queue.append(nxt)
+
+                missing = sorted(node_ids - reachable, key=node_sort_key)
+                if missing:
+                    preview = ", ".join(missing[:10])
+                    suffix = "..." if len(missing) > 10 else ""
+                    errors.append(
+                        f"{context}.graphPath has nodes unreachable from entryNodeIds: {preview}{suffix}"
+                    )
+
+    return errors
+
+
+def validate_release_graph_semantics(manifest: Any) -> list[str]:
+    errors: list[str] = []
+    releases = manifest.get("releases") if isinstance(manifest, dict) else None
+    if not isinstance(releases, list):
+        return errors
+
+    for idx, release in enumerate(releases):
+        context = f"releases[{idx}]"
+        if not isinstance(release, dict):
+            continue
+        graph_path = release.get("graphPath")
+        schema_path = release.get("schemaPath")
+        if not isinstance(graph_path, str) or not isinstance(schema_path, str):
+            continue
+
+        graph_file = REPO_ROOT / graph_path
+        schema_file = REPO_ROOT / schema_path
+        if not graph_file.is_file():
+            continue
+
+        graph_version = release.get("graphVersion")
+        requires_new_semantics = (
+            isinstance(graph_version, str)
+            and version_at_least(graph_version, ENFORCEMENT_VERSION)
+        )
+
+        try:
+            graph = load_json(graph_file)
+        except RuntimeError as exc:
+            errors.append(str(exc))
+            continue
+
+        schema: Any = {}
+        if requires_new_semantics:
+            if not schema_file.is_file():
+                errors.append(f"{context}.schemaPath references missing file: {schema_path}")
+                continue
+            try:
+                schema = load_json(schema_file)
+            except RuntimeError as exc:
+                errors.append(str(exc))
+                continue
+
+        errors.extend(validate_graph_semantics(graph, schema, release, context))
+
+    return errors
+
+
 def validate_checksums() -> list[str]:
     errors: list[str] = []
     payload = load_json(CHECKSUMS_PATH)
@@ -316,6 +699,7 @@ def main() -> int:
         return 1
 
     errors = validate_manifest(manifest)
+    errors.extend(validate_release_graph_semantics(manifest))
 
     if not args.skip_checksum_validation:
         try:
