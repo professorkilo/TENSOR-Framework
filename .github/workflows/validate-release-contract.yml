@@ -4,16 +4,26 @@ on:
   pull_request:
     paths:
       - 'releases/**'
+      - 'drafts/core/source/**'
       - 'scripts/validate_release_contract.py'
       - 'scripts/generate_release_checksums.py'
+      - 'scripts/core_graph_pipeline.py'
+      - 'scripts/core_graph_math_assurance.py'
+      - 'scripts/build_core_graph_from_source.py'
+      - 'scripts/lint_core_graph_quality.py'
       - 'standards/**'
       - '.github/workflows/validate-release-contract.yml'
   push:
     branches: [ main ]
     paths:
       - 'releases/**'
+      - 'drafts/core/source/**'
       - 'scripts/validate_release_contract.py'
       - 'scripts/generate_release_checksums.py'
+      - 'scripts/core_graph_pipeline.py'
+      - 'scripts/core_graph_math_assurance.py'
+      - 'scripts/build_core_graph_from_source.py'
+      - 'scripts/lint_core_graph_quality.py'
       - 'standards/**'
       - '.github/workflows/validate-release-contract.yml'
 
@@ -31,3 +41,16 @@ jobs:
 
       - name: Validate release contract
         run: python3 scripts/validate_release_contract.py
+
+      - name: Resolve latest core version from manifest
+        id: latest
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          with open("releases/manifest.json", "r", encoding="utf-8") as f:
+              manifest = json.load(f)
+          print(f"version={manifest['latestGraphVersion']}")
+          PY
+
+      - name: Validate core graph quality gates
+        run: python3 scripts/lint_core_graph_quality.py --version "${{ steps.latest.outputs.version }}"

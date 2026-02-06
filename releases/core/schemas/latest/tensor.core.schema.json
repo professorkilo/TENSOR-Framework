@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://tensor-standards-consortium.github.io/TENSOR-Framework/releases/core/schemas/v0.20260206/tensor.core.schema.json",
+  "$id": "https://tensor-standards-consortium.github.io/TENSOR-Framework/releases/core/schemas/v0.20260206e/tensor.core.schema.json",
   "title": "TENSOR Framework Core Schema",
   "description": "Canonical schema for TENSOR investigation-only graphs (Core module).",
   "type": "object",
@@ -113,7 +113,8 @@
       "required": [
         "id",
         "text",
-        "category"
+        "category",
+        "archetype"
       ],
       "properties": {
         "id": {
@@ -165,6 +166,20 @@
         "extensions": {
           "$ref": "#/$defs/extensionsObject",
           "description": "Per-node extensions. Use namespaced keys only."
+        },
+        "archetype": {
+          "type": "string",
+          "enum": [
+            "detect",
+            "validate",
+            "classify",
+            "scope",
+            "correlate",
+            "attribute",
+            "impact",
+            "terminal"
+          ],
+          "description": "Investigation archetype for the node."
         }
       },
       "additionalProperties": false

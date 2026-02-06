@@ -2,8 +2,8 @@
   "generatedAt": "2026-02-06T00:00:00Z",
   "namespace": "tensor",
   "product": "core",
-  "version": "0.20260206e",
-  "schemaVersion": "0.20260206e",
+  "version": "0.20260206d",
+  "schemaVersion": "0.20260206d",
   "locale": "en-US",
   "entryNodeIds": [
     "Q1",
@@ -3638,506 +3638,450 @@
     },
     {
       "id": "Q517",
-      "text": "Was the investigation hypothesis for identity authentication and privilege activity in process ancestry resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for identity authentication and privilege activity in process ancestry terminald with sufficient objective evidence?",
       "label": "Identity terminal 1",
       "category": "Identity",
       "archetype": "terminal"
     },
     {
       "id": "Q518",
-      "text": "Was the investigation hypothesis for endpoint execution and persistence activity in content lineage resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for endpoint execution and persistence activity in content lineage terminald with sufficient objective evidence?",
       "label": "Host terminal 1",
       "category": "Host",
       "archetype": "terminal"
     },
     {
       "id": "Q519",
-      "text": "Was the investigation hypothesis for network session and transport activity in control-plane actions resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for network session and transport activity in control-plane actions terminald with sufficient objective evidence?",
       "label": "Network terminal 1",
       "category": "Network",
       "archetype": "terminal"
     },
     {
       "id": "Q520",
-      "text": "Was the investigation hypothesis for cloud control-plane and workload activity in transport metadata resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for cloud control-plane and workload activity in transport metadata terminald with sufficient objective evidence?",
       "label": "Cloud terminal 1",
       "category": "Cloud",
       "archetype": "terminal"
     },
     {
       "id": "Q521",
-      "text": "Was the investigation hypothesis for mailbox message and collaboration activity in privileged access events resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for mailbox message and collaboration activity in privileged access events terminald with sufficient objective evidence?",
       "label": "Email terminal 1",
       "category": "Email",
       "archetype": "terminal"
     },
     {
       "id": "Q522",
-      "text": "Was the investigation hypothesis for application request and session activity in session anomalies resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for application request and session activity in session anomalies terminald with sufficient objective evidence?",
       "label": "Application terminal 1",
       "category": "Application",
       "archetype": "terminal"
     },
     {
       "id": "Q523",
-      "text": "Was the investigation hypothesis for file artifact and content activity in collaboration artifacts resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for file artifact and content activity in collaboration artifacts terminald with sufficient objective evidence?",
       "label": "File terminal 1",
       "category": "File",
       "archetype": "terminal"
     },
     {
       "id": "Q524",
-      "text": "Was residual uncertainty for identity authentication and privilege activity in execution lineage documented within the terminal assessment?",
+      "text": "Was residual uncertainty for identity authentication and privilege activity in execution lineage documented within the final conclusion?",
       "label": "Identity terminal 2",
       "category": "Identity",
       "archetype": "terminal"
     },
     {
       "id": "Q525",
-      "text": "Was residual uncertainty for endpoint execution and persistence activity in process ancestry documented within the terminal assessment?",
+      "text": "Was residual uncertainty for endpoint execution and persistence activity in process ancestry documented within the final conclusion?",
       "label": "Host terminal 2",
       "category": "Host",
       "archetype": "terminal"
     },
     {
       "id": "Q526",
-      "text": "Was residual uncertainty for network session and transport activity in content lineage documented within the terminal assessment?",
+      "text": "Was residual uncertainty for network session and transport activity in content lineage documented within the final conclusion?",
       "label": "Network terminal 2",
       "category": "Network",
       "archetype": "terminal"
     },
     {
       "id": "Q527",
-      "text": "Was residual uncertainty for cloud control-plane and workload activity in control-plane actions documented within the terminal assessment?",
+      "text": "Was residual uncertainty for cloud control-plane and workload activity in control-plane actions documented within the final conclusion?",
       "label": "Cloud terminal 2",
       "category": "Cloud",
       "archetype": "terminal"
     },
     {
       "id": "Q528",
-      "text": "Was residual uncertainty for mailbox message and collaboration activity in transport metadata documented within the terminal assessment?",
+      "text": "Was residual uncertainty for mailbox message and collaboration activity in transport metadata documented within the final conclusion?",
       "label": "Email terminal 2",
       "category": "Email",
       "archetype": "terminal"
     },
     {
       "id": "Q529",
-      "text": "Was residual uncertainty for application request and session activity in privileged access events documented within the terminal assessment?",
+      "text": "Was residual uncertainty for application request and session activity in privileged access events documented within the final conclusion?",
       "label": "Application terminal 2",
       "category": "Application",
       "archetype": "terminal"
     },
     {
       "id": "Q530",
-      "text": "Was residual uncertainty for file artifact and content activity in session anomalies documented within the terminal assessment?",
+      "text": "Was residual uncertainty for file artifact and content activity in session anomalies documented within the final conclusion?",
       "label": "File terminal 2",
       "category": "File",
       "archetype": "terminal"
     },
     {
       "id": "Q531",
-      "text": "Was the investigation hypothesis for identity authentication and privilege activity in collaboration artifacts resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for identity authentication and privilege activity in collaboration artifacts terminald with sufficient objective evidence?",
       "label": "Identity terminal 3",
       "category": "Identity",
       "archetype": "terminal"
     },
     {
       "id": "Q532",
-      "text": "Was the investigation hypothesis for endpoint execution and persistence activity in execution lineage resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for endpoint execution and persistence activity in execution lineage terminald with sufficient objective evidence?",
       "label": "Host terminal 3",
       "category": "Host",
       "archetype": "terminal"
     },
     {
       "id": "Q533",
-      "text": "Was the investigation hypothesis for network session and transport activity in process ancestry resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for network session and transport activity in process ancestry terminald with sufficient objective evidence?",
       "label": "Network terminal 3",
       "category": "Network",
       "archetype": "terminal"
     },
     {
       "id": "Q534",
-      "text": "Was the investigation hypothesis for cloud control-plane and workload activity in content lineage resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for cloud control-plane and workload activity in content lineage terminald with sufficient objective evidence?",
       "label": "Cloud terminal 3",
       "category": "Cloud",
       "archetype": "terminal"
     },
     {
       "id": "Q535",
-      "text": "Was the investigation hypothesis for mailbox message and collaboration activity in control-plane actions resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for mailbox message and collaboration activity in control-plane actions terminald with sufficient objective evidence?",
       "label": "Email terminal 3",
       "category": "Email",
       "archetype": "terminal"
     },
     {
       "id": "Q536",
-      "text": "Was the investigation hypothesis for application request and session activity in transport metadata resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for application request and session activity in transport metadata terminald with sufficient objective evidence?",
       "label": "Application terminal 3",
       "category": "Application",
       "archetype": "terminal"
     },
     {
       "id": "Q537",
-      "text": "Was the investigation hypothesis for file artifact and content activity in privileged access events resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for file artifact and content activity in privileged access events terminald with sufficient objective evidence?",
       "label": "File terminal 3",
       "category": "File",
       "archetype": "terminal"
     },
     {
       "id": "Q538",
-      "text": "Was residual uncertainty for identity authentication and privilege activity in session anomalies documented within the terminal assessment?",
+      "text": "Was residual uncertainty for identity authentication and privilege activity in session anomalies documented within the final conclusion?",
       "label": "Identity terminal 4",
       "category": "Identity",
       "archetype": "terminal"
     },
     {
       "id": "Q539",
-      "text": "Was residual uncertainty for endpoint execution and persistence activity in collaboration artifacts documented within the terminal assessment?",
+      "text": "Was residual uncertainty for endpoint execution and persistence activity in collaboration artifacts documented within the final conclusion?",
       "label": "Host terminal 4",
       "category": "Host",
       "archetype": "terminal"
     },
     {
       "id": "Q540",
-      "text": "Was residual uncertainty for network session and transport activity in execution lineage documented within the terminal assessment?",
+      "text": "Was residual uncertainty for network session and transport activity in execution lineage documented within the final conclusion?",
       "label": "Network terminal 4",
       "category": "Network",
       "archetype": "terminal"
     },
     {
       "id": "Q541",
-      "text": "Was residual uncertainty for cloud control-plane and workload activity in process ancestry documented within the terminal assessment?",
+      "text": "Was residual uncertainty for cloud control-plane and workload activity in process ancestry documented within the final conclusion?",
       "label": "Cloud terminal 4",
       "category": "Cloud",
       "archetype": "terminal"
     },
     {
       "id": "Q542",
-      "text": "Was residual uncertainty for mailbox message and collaboration activity in content lineage documented within the terminal assessment?",
+      "text": "Was residual uncertainty for mailbox message and collaboration activity in content lineage documented within the final conclusion?",
       "label": "Email terminal 4",
       "category": "Email",
       "archetype": "terminal"
     },
     {
       "id": "Q543",
-      "text": "Was residual uncertainty for application request and session activity in control-plane actions documented within the terminal assessment?",
+      "text": "Was residual uncertainty for application request and session activity in control-plane actions documented within the final conclusion?",
       "label": "Application terminal 4",
       "category": "Application",
       "archetype": "terminal"
     },
     {
       "id": "Q544",
-      "text": "Was residual uncertainty for file artifact and content activity in transport metadata documented within the terminal assessment?",
+      "text": "Was residual uncertainty for file artifact and content activity in transport metadata documented within the final conclusion?",
       "label": "File terminal 4",
       "category": "File",
       "archetype": "terminal"
     },
     {
       "id": "Q545",
-      "text": "Was the investigation hypothesis for identity authentication and privilege activity in privileged access events resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for identity authentication and privilege activity in privileged access events terminald with sufficient objective evidence?",
       "label": "Identity terminal 5",
       "category": "Identity",
       "archetype": "terminal"
     },
     {
       "id": "Q546",
-      "text": "Was the investigation hypothesis for endpoint execution and persistence activity in session anomalies resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for endpoint execution and persistence activity in session anomalies terminald with sufficient objective evidence?",
       "label": "Host terminal 5",
       "category": "Host",
       "archetype": "terminal"
     },
     {
       "id": "Q547",
-      "text": "Was the investigation hypothesis for network session and transport activity in collaboration artifacts resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for network session and transport activity in collaboration artifacts terminald with sufficient objective evidence?",
       "label": "Network terminal 5",
       "category": "Network",
       "archetype": "terminal"
     },
     {
       "id": "Q548",
-      "text": "Was the investigation hypothesis for cloud control-plane and workload activity in execution lineage resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for cloud control-plane and workload activity in execution lineage terminald with sufficient objective evidence?",
       "label": "Cloud terminal 5",
       "category": "Cloud",
       "archetype": "terminal"
     },
     {
       "id": "Q549",
-      "text": "Was the investigation hypothesis for mailbox message and collaboration activity in process ancestry resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for mailbox message and collaboration activity in process ancestry terminald with sufficient objective evidence?",
       "label": "Email terminal 5",
       "category": "Email",
       "archetype": "terminal"
     },
     {
       "id": "Q550",
-      "text": "Was the investigation hypothesis for application request and session activity in content lineage resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for application request and session activity in content lineage terminald with sufficient objective evidence?",
       "label": "Application terminal 5",
       "category": "Application",
       "archetype": "terminal"
     },
     {
       "id": "Q551",
-      "text": "Was the investigation hypothesis for file artifact and content activity in control-plane actions resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for file artifact and content activity in control-plane actions terminald with sufficient objective evidence?",
       "label": "File terminal 5",
       "category": "File",
       "archetype": "terminal"
     },
     {
       "id": "Q552",
-      "text": "Was residual uncertainty for identity authentication and privilege activity in transport metadata documented within the terminal assessment?",
+      "text": "Was residual uncertainty for identity authentication and privilege activity in transport metadata documented within the final conclusion?",
       "label": "Identity terminal 6",
       "category": "Identity",
       "archetype": "terminal"
     },
     {
       "id": "Q553",
-      "text": "Was residual uncertainty for endpoint execution and persistence activity in privileged access events documented within the terminal assessment?",
+      "text": "Was residual uncertainty for endpoint execution and persistence activity in privileged access events documented within the final conclusion?",
       "label": "Host terminal 6",
       "category": "Host",
       "archetype": "terminal"
     },
     {
       "id": "Q554",
-      "text": "Was residual uncertainty for network session and transport activity in session anomalies documented within the terminal assessment?",
+      "text": "Was residual uncertainty for network session and transport activity in session anomalies documented within the final conclusion?",
       "label": "Network terminal 6",
       "category": "Network",
       "archetype": "terminal"
     },
     {
       "id": "Q555",
-      "text": "Was residual uncertainty for cloud control-plane and workload activity in collaboration artifacts documented within the terminal assessment?",
+      "text": "Was residual uncertainty for cloud control-plane and workload activity in collaboration artifacts documented within the final conclusion?",
       "label": "Cloud terminal 6",
       "category": "Cloud",
       "archetype": "terminal"
     },
     {
       "id": "Q556",
-      "text": "Was residual uncertainty for mailbox message and collaboration activity in execution lineage documented within the terminal assessment?",
+      "text": "Was residual uncertainty for mailbox message and collaboration activity in execution lineage documented within the final conclusion?",
       "label": "Email terminal 6",
       "category": "Email",
       "archetype": "terminal"
     },
     {
       "id": "Q557",
-      "text": "Was residual uncertainty for application request and session activity in process ancestry documented within the terminal assessment?",
+      "text": "Was residual uncertainty for application request and session activity in process ancestry documented within the final conclusion?",
       "label": "Application terminal 6",
       "category": "Application",
       "archetype": "terminal"
     },
     {
       "id": "Q558",
-      "text": "Have findings for identity authentication and privilege activity in network pivots reached a defensible terminal assessment?",
+      "text": "Have findings for identity authentication and privilege activity in network pivots reached a defensible investigative conclusion?",
       "label": "Identity terminal 7",
       "category": "Identity",
       "archetype": "terminal"
     },
     {
       "id": "Q559",
-      "text": "Have findings for endpoint execution and persistence activity in endpoint state changes reached a defensible terminal assessment?",
+      "text": "Have findings for endpoint execution and persistence activity in endpoint state changes reached a defensible investigative conclusion?",
       "label": "Host terminal 7",
       "category": "Host",
       "archetype": "terminal"
     },
     {
       "id": "Q560",
-      "text": "Have findings for network session and transport activity in artifact provenance reached a defensible terminal assessment?",
+      "text": "Have findings for network session and transport activity in artifact provenance reached a defensible investigative conclusion?",
       "label": "Network terminal 7",
       "category": "Network",
       "archetype": "terminal"
     },
     {
       "id": "Q561",
-      "text": "Have findings for cloud control-plane and workload activity in message delivery paths reached a defensible terminal assessment?",
+      "text": "Have findings for cloud control-plane and workload activity in message delivery paths reached a defensible investigative conclusion?",
       "label": "Cloud terminal 7",
       "category": "Cloud",
       "archetype": "terminal"
     },
     {
       "id": "Q562",
-      "text": "Have findings for mailbox message and collaboration activity in workload identity context reached a defensible terminal assessment?",
+      "text": "Have findings for mailbox message and collaboration activity in workload identity context reached a defensible investigative conclusion?",
       "label": "Email terminal 7",
       "category": "Email",
       "archetype": "terminal"
     },
     {
       "id": "Q563",
-      "text": "Have findings for application request and session activity in authentication pathways reached a defensible terminal assessment?",
+      "text": "Have findings for application request and session activity in authentication pathways reached a defensible investigative conclusion?",
       "label": "Application terminal 7",
       "category": "Application",
       "archetype": "terminal"
     },
     {
       "id": "Q564",
-      "text": "Was the investigation hypothesis for identity authentication and privilege activity in collaboration artifacts resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for identity authentication and privilege activity in collaboration artifacts terminald with sufficient objective evidence?",
       "label": "Identity terminal 8",
       "category": "Identity",
       "archetype": "terminal"
     },
     {
       "id": "Q565",
-      "text": "Was the investigation hypothesis for endpoint execution and persistence activity in execution lineage resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for endpoint execution and persistence activity in execution lineage terminald with sufficient objective evidence?",
       "label": "Host terminal 8",
       "category": "Host",
       "archetype": "terminal"
     },
     {
       "id": "Q566",
-      "text": "Was the investigation hypothesis for network session and transport activity in process ancestry resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for network session and transport activity in process ancestry terminald with sufficient objective evidence?",
       "label": "Network terminal 8",
       "category": "Network",
       "archetype": "terminal"
     },
     {
       "id": "Q567",
-      "text": "Was the investigation hypothesis for cloud control-plane and workload activity in content lineage resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for cloud control-plane and workload activity in content lineage terminald with sufficient objective evidence?",
       "label": "Cloud terminal 8",
       "category": "Cloud",
       "archetype": "terminal"
     },
     {
       "id": "Q568",
-      "text": "Was the investigation hypothesis for mailbox message and collaboration activity in control-plane actions resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for mailbox message and collaboration activity in control-plane actions terminald with sufficient objective evidence?",
       "label": "Email terminal 8",
       "category": "Email",
       "archetype": "terminal"
     },
     {
       "id": "Q569",
-      "text": "Was the investigation hypothesis for application request and session activity in transport metadata resolved with sufficient objective evidence?",
+      "text": "Was the investigation hypothesis for application request and session activity in transport metadata terminald with sufficient objective evidence?",
       "label": "Application terminal 8",
       "category": "Application",
       "archetype": "terminal"
     },
     {
       "id": "Q570",
-      "text": "Have terminal criteria for identity authentication and privilege activity in message delivery paths been satisfied by verified evidence?",
+      "text": "Have conclusion criteria for identity authentication and privilege activity in message delivery paths been satisfied by verified evidence?",
       "label": "Identity terminal 9",
       "category": "Identity",
       "archetype": "terminal"
     },
     {
       "id": "Q571",
-      "text": "Have terminal criteria for endpoint execution and persistence activity in workload identity context been satisfied by verified evidence?",
+      "text": "Have conclusion criteria for endpoint execution and persistence activity in workload identity context been satisfied by verified evidence?",
       "label": "Host terminal 9",
       "category": "Host",
       "archetype": "terminal"
     },
     {
       "id": "Q572",
-      "text": "Have terminal criteria for network session and transport activity in authentication pathways been satisfied by verified evidence?",
+      "text": "Have conclusion criteria for network session and transport activity in authentication pathways been satisfied by verified evidence?",
       "label": "Network terminal 9",
       "category": "Network",
       "archetype": "terminal"
     },
     {
       "id": "Q573",
-      "text": "Have terminal criteria for cloud control-plane and workload activity in data access traces been satisfied by verified evidence?",
+      "text": "Have conclusion criteria for cloud control-plane and workload activity in data access traces been satisfied by verified evidence?",
       "label": "Cloud terminal 9",
       "category": "Cloud",
       "archetype": "terminal"
     },
     {
       "id": "Q574",
-      "text": "Have terminal criteria for mailbox message and collaboration activity in api invocation patterns been satisfied by verified evidence?",
+      "text": "Have conclusion criteria for mailbox message and collaboration activity in api invocation patterns been satisfied by verified evidence?",
       "label": "Email terminal 9",
       "category": "Email",
       "archetype": "terminal"
     },
     {
       "id": "Q575",
-      "text": "Have terminal criteria for identity authentication and privilege activity in api invocation patterns been satisfied by verified evidence?",
+      "text": "Have conclusion criteria for identity authentication and privilege activity in api invocation patterns been satisfied by verified evidence?",
       "label": "Identity terminal 10",
       "category": "Identity",
       "archetype": "terminal"
     },
     {
       "id": "Q576",
-      "text": "Have terminal criteria for endpoint execution and persistence activity in network pivots been satisfied by verified evidence?",
+      "text": "Have conclusion criteria for endpoint execution and persistence activity in network pivots been satisfied by verified evidence?",
       "label": "Host terminal 10",
       "category": "Host",
       "archetype": "terminal"
     },
     {
       "id": "Q577",
-      "text": "Have terminal criteria for network session and transport activity in endpoint state changes been satisfied by verified evidence?",
+      "text": "Have conclusion criteria for network session and transport activity in endpoint state changes been satisfied by verified evidence?",
       "label": "Network terminal 10",
       "category": "Network",
       "archetype": "terminal"
     },
     {
       "id": "Q578",
-      "text": "Have terminal criteria for cloud control-plane and workload activity in artifact provenance been satisfied by verified evidence?",
+      "text": "Have conclusion criteria for cloud control-plane and workload activity in artifact provenance been satisfied by verified evidence?",
       "label": "Cloud terminal 10",
       "category": "Cloud",
       "archetype": "terminal"
     },
     {
       "id": "Q579",
-      "text": "Have findings for endpoint execution and persistence activity in endpoint state changes reached a defensible terminal assessment?",
+      "text": "Have findings for endpoint execution and persistence activity in endpoint state changes reached a defensible investigative conclusion?",
       "label": "Host terminal 11",
       "category": "Host",
       "archetype": "terminal"
     },
     {
       "id": "Q580",
-      "text": "Was residual uncertainty for cloud control-plane and workload activity in control-plane actions documented within the terminal assessment?",
+      "text": "Was residual uncertainty for cloud control-plane and workload activity in control-plane actions documented within the final conclusion?",
       "label": "Cloud terminal 11",
       "category": "Cloud",
-      "archetype": "terminal"
-    },
-    {
-      "id": "Q581",
-      "text": "Did file artifact and content activity in artifact provenance create measurable confidentiality, integrity, or availability impact beyond currently scoped entities?",
-      "label": "File impact 6",
-      "category": "File",
-      "archetype": "impact"
-    },
-    {
-      "id": "Q582",
-      "text": "Was mission or business exposure from file artifact and content activity in endpoint state changes measured with evidence across additional affected assets?",
-      "label": "File impact 7",
-      "category": "File",
-      "archetype": "impact"
-    },
-    {
-      "id": "Q583",
-      "text": "Was the investigation hypothesis for file artifact and content activity in data access traces resolved with sufficient objective evidence?",
-      "label": "File terminal 6",
-      "category": "File",
-      "archetype": "terminal"
-    },
-    {
-      "id": "Q584",
-      "text": "Was the investigation hypothesis for file artifact and content activity in authentication pathways resolved with sufficient objective evidence?",
-      "label": "File terminal 7",
-      "category": "File",
-      "archetype": "terminal"
-    },
-    {
-      "id": "Q585",
-      "text": "Was residual uncertainty for file artifact and content activity in api invocation patterns documented within the terminal assessment?",
-      "label": "File terminal 8",
-      "category": "File",
-      "archetype": "terminal"
-    },
-    {
-      "id": "Q586",
-      "text": "Was residual uncertainty for file artifact and content activity in network pivots documented within the terminal assessment?",
-      "label": "File terminal 9",
-      "category": "File",
-      "archetype": "terminal"
-    },
-    {
-      "id": "Q587",
-      "text": "Have terminal criteria for file artifact and content activity in endpoint state changes been satisfied by verified evidence?",
-      "label": "File terminal 10",
-      "category": "File",
-      "archetype": "terminal"
-    },
-    {
-      "id": "Q588",
-      "text": "Have findings for file artifact and content activity in artifact provenance reached a defensible terminal assessment?",
-      "label": "File terminal 11",
-      "category": "File",
       "archetype": "terminal"
     }
   ],
@@ -4797,15 +4741,15 @@
       "decision": "yes"
     },
     {
-      "id": "Q37-no-Q38",
+      "id": "Q37-no-Q251",
       "source": "Q37",
-      "target": "Q38",
+      "target": "Q251",
       "decision": "no"
     },
     {
-      "id": "Q37-unknown-Q39",
+      "id": "Q37-unknown-Q38",
       "source": "Q37",
-      "target": "Q39",
+      "target": "Q38",
       "decision": "unknown"
     },
     {
@@ -4815,15 +4759,15 @@
       "decision": "yes"
     },
     {
-      "id": "Q38-no-Q39",
+      "id": "Q38-no-Q287",
       "source": "Q38",
-      "target": "Q39",
+      "target": "Q287",
       "decision": "no"
     },
     {
-      "id": "Q38-unknown-Q40",
+      "id": "Q38-unknown-Q39",
       "source": "Q38",
-      "target": "Q40",
+      "target": "Q39",
       "decision": "unknown"
     },
     {
@@ -4833,15 +4777,15 @@
       "decision": "yes"
     },
     {
-      "id": "Q39-no-Q40",
+      "id": "Q39-no-Q307",
       "source": "Q39",
-      "target": "Q40",
+      "target": "Q307",
       "decision": "no"
     },
     {
-      "id": "Q39-unknown-Q41",
+      "id": "Q39-unknown-Q40",
       "source": "Q39",
-      "target": "Q41",
+      "target": "Q40",
       "decision": "unknown"
     },
     {
@@ -4851,15 +4795,15 @@
       "decision": "yes"
     },
     {
-      "id": "Q40-no-Q41",
+      "id": "Q40-no-Q308",
       "source": "Q40",
-      "target": "Q41",
+      "target": "Q308",
       "decision": "no"
     },
     {
-      "id": "Q40-unknown-Q42",
+      "id": "Q40-unknown-Q41",
       "source": "Q40",
-      "target": "Q42",
+      "target": "Q41",
       "decision": "unknown"
     },
     {
@@ -4869,15 +4813,15 @@
       "decision": "yes"
     },
     {
-      "id": "Q41-no-Q42",
+      "id": "Q41-no-Q306",
       "source": "Q41",
-      "target": "Q42",
+      "target": "Q306",
       "decision": "no"
     },
     {
-      "id": "Q41-unknown-Q43",
+      "id": "Q41-unknown-Q42",
       "source": "Q41",
-      "target": "Q43",
+      "target": "Q42",
       "decision": "unknown"
     },
     {
@@ -4887,15 +4831,15 @@
       "decision": "yes"
     },
     {
-      "id": "Q42-no-Q43",
+      "id": "Q42-no-Q305",
       "source": "Q42",
-      "target": "Q43",
+      "target": "Q305",
       "decision": "no"
     },
     {
-      "id": "Q42-unknown-Q44",
+      "id": "Q42-unknown-Q43",
       "source": "Q42",
-      "target": "Q44",
+      "target": "Q43",
       "decision": "unknown"
     },
     {
@@ -4905,15 +4849,15 @@
       "decision": "yes"
     },
     {
-      "id": "Q43-no-Q44",
+      "id": "Q43-no-Q249",
       "source": "Q43",
-      "target": "Q44",
+      "target": "Q249",
       "decision": "no"
     },
     {
-      "id": "Q43-unknown-Q45",
+      "id": "Q43-unknown-Q44",
       "source": "Q43",
-      "target": "Q45",
+      "target": "Q44",
       "decision": "unknown"
     },
     {
@@ -4923,15 +4867,15 @@
       "decision": "yes"
     },
     {
-      "id": "Q44-no-Q45",
+      "id": "Q44-no-Q244",
       "source": "Q44",
-      "target": "Q45",
+      "target": "Q244",
       "decision": "no"
     },
     {
-      "id": "Q44-unknown-Q46",
+      "id": "Q44-unknown-Q45",
       "source": "Q44",
-      "target": "Q46",
+      "target": "Q45",
       "decision": "unknown"
     },
     {
@@ -4941,15 +4885,15 @@
       "decision": "yes"
     },
     {
-      "id": "Q45-no-Q46",
+      "id": "Q45-no-Q243",
       "source": "Q45",
-      "target": "Q46",
+      "target": "Q243",
       "decision": "no"
     },
     {
-      "id": "Q45-unknown-Q47",
+      "id": "Q45-unknown-Q46",
       "source": "Q45",
-      "target": "Q47",
+      "target": "Q46",
       "decision": "unknown"
     },
     {
@@ -4959,15 +4903,15 @@
       "decision": "yes"
     },
     {
-      "id": "Q46-no-Q47",
+      "id": "Q46-no-Q301",
       "source": "Q46",
-      "target": "Q47",
+      "target": "Q301",
       "decision": "no"
     },
     {
-      "id": "Q46-unknown-Q48",
+      "id": "Q46-unknown-Q47",
       "source": "Q46",
-      "target": "Q48",
+      "target": "Q47",
       "decision": "unknown"
     },
     {
@@ -4983,9 +4927,9 @@
       "decision": "no"
     },
     {
-      "id": "Q47-unknown-Q49",
+      "id": "Q47-unknown-Q48",
       "source": "Q47",
-      "target": "Q49",
+      "target": "Q48",
       "decision": "unknown"
     },
     {
@@ -5001,9 +4945,9 @@
       "decision": "no"
     },
     {
-      "id": "Q48-unknown-Q50",
+      "id": "Q48-unknown-Q49",
       "source": "Q48",
-      "target": "Q50",
+      "target": "Q49",
       "decision": "unknown"
     },
     {
@@ -5019,9 +4963,9 @@
       "decision": "no"
     },
     {
-      "id": "Q49-unknown-Q51",
+      "id": "Q49-unknown-Q50",
       "source": "Q49",
-      "target": "Q51",
+      "target": "Q50",
       "decision": "unknown"
     },
     {
@@ -5037,9 +4981,9 @@
       "decision": "no"
     },
     {
-      "id": "Q50-unknown-Q52",
+      "id": "Q50-unknown-Q51",
       "source": "Q50",
-      "target": "Q52",
+      "target": "Q51",
       "decision": "unknown"
     },
     {
@@ -5055,9 +4999,9 @@
       "decision": "no"
     },
     {
-      "id": "Q51-unknown-Q53",
+      "id": "Q51-unknown-Q52",
       "source": "Q51",
-      "target": "Q53",
+      "target": "Q52",
       "decision": "unknown"
     },
     {
@@ -5073,9 +5017,9 @@
       "decision": "no"
     },
     {
-      "id": "Q52-unknown-Q54",
+      "id": "Q52-unknown-Q53",
       "source": "Q52",
-      "target": "Q54",
+      "target": "Q53",
       "decision": "unknown"
     },
     {
@@ -5091,9 +5035,9 @@
       "decision": "no"
     },
     {
-      "id": "Q53-unknown-Q55",
+      "id": "Q53-unknown-Q54",
       "source": "Q53",
-      "target": "Q55",
+      "target": "Q54",
       "decision": "unknown"
     },
     {
@@ -5109,9 +5053,9 @@
       "decision": "no"
     },
     {
-      "id": "Q54-unknown-Q56",
+      "id": "Q54-unknown-Q55",
       "source": "Q54",
-      "target": "Q56",
+      "target": "Q55",
       "decision": "unknown"
     },
     {
@@ -5127,9 +5071,9 @@
       "decision": "no"
     },
     {
-      "id": "Q55-unknown-Q57",
+      "id": "Q55-unknown-Q56",
       "source": "Q55",
-      "target": "Q57",
+      "target": "Q56",
       "decision": "unknown"
     },
     {
@@ -5529,9 +5473,9 @@
       "decision": "unknown"
     },
     {
-      "id": "Q78-yes-Q82",
+      "id": "Q78-yes-Q101",
       "source": "Q78",
-      "target": "Q82",
+      "target": "Q101",
       "decision": "yes"
     },
     {
@@ -5547,9 +5491,9 @@
       "decision": "unknown"
     },
     {
-      "id": "Q79-yes-Q101",
+      "id": "Q79-yes-Q105",
       "source": "Q79",
-      "target": "Q101",
+      "target": "Q105",
       "decision": "yes"
     },
     {
@@ -5565,9 +5509,9 @@
       "decision": "unknown"
     },
     {
-      "id": "Q80-yes-Q88",
+      "id": "Q80-yes-Q106",
       "source": "Q80",
-      "target": "Q88",
+      "target": "Q106",
       "decision": "yes"
     },
     {
@@ -6897,9 +6841,9 @@
       "decision": "unknown"
     },
     {
-      "id": "Q154-yes-Q161",
+      "id": "Q154-yes-Q220",
       "source": "Q154",
-      "target": "Q161",
+      "target": "Q220",
       "decision": "yes"
     },
     {
@@ -6951,9 +6895,9 @@
       "decision": "unknown"
     },
     {
-      "id": "Q157-yes-Q220",
+      "id": "Q157-yes-Q217",
       "source": "Q157",
-      "target": "Q220",
+      "target": "Q217",
       "decision": "yes"
     },
     {
@@ -6969,9 +6913,9 @@
       "decision": "unknown"
     },
     {
-      "id": "Q158-yes-Q171",
+      "id": "Q158-yes-Q216",
       "source": "Q158",
-      "target": "Q171",
+      "target": "Q216",
       "decision": "yes"
     },
     {
@@ -12621,9 +12565,9 @@
       "decision": "unknown"
     },
     {
-      "id": "Q472-yes-Q581",
+      "id": "Q472-yes-Q544",
       "source": "Q472",
-      "target": "Q581",
+      "target": "Q544",
       "decision": "yes"
     },
     {
@@ -12747,9 +12691,9 @@
       "decision": "unknown"
     },
     {
-      "id": "Q479-yes-Q582",
+      "id": "Q479-yes-Q551",
       "source": "Q479",
-      "target": "Q582",
+      "target": "Q551",
       "decision": "yes"
     },
     {
@@ -12891,9 +12835,9 @@
       "decision": "unknown"
     },
     {
-      "id": "Q487-yes-Q583",
+      "id": "Q487-yes-Q579",
       "source": "Q487",
-      "target": "Q583",
+      "target": "Q579",
       "decision": "yes"
     },
     {
@@ -13125,9 +13069,9 @@
       "decision": "unknown"
     },
     {
-      "id": "Q500-yes-Q584",
+      "id": "Q500-yes-Q572",
       "source": "Q500",
-      "target": "Q584",
+      "target": "Q572",
       "decision": "yes"
     },
     {
@@ -13179,9 +13123,9 @@
       "decision": "unknown"
     },
     {
-      "id": "Q503-yes-Q585",
+      "id": "Q503-yes-Q569",
       "source": "Q503",
-      "target": "Q585",
+      "target": "Q569",
       "decision": "yes"
     },
     {
@@ -13233,9 +13177,9 @@
       "decision": "unknown"
     },
     {
-      "id": "Q506-yes-Q586",
+      "id": "Q506-yes-Q560",
       "source": "Q506",
-      "target": "Q586",
+      "target": "Q560",
       "decision": "yes"
     },
     {
@@ -13305,9 +13249,9 @@
       "decision": "unknown"
     },
     {
-      "id": "Q510-yes-Q587",
+      "id": "Q510-yes-Q564",
       "source": "Q510",
-      "target": "Q587",
+      "target": "Q564",
       "decision": "yes"
     },
     {
@@ -13341,9 +13285,9 @@
       "decision": "unknown"
     },
     {
-      "id": "Q512-yes-Q588",
+      "id": "Q512-yes-Q555",
       "source": "Q512",
-      "target": "Q588",
+      "target": "Q555",
       "decision": "yes"
     },
     {
@@ -13428,42 +13372,6 @@
       "id": "Q516-unknown-Q535",
       "source": "Q516",
       "target": "Q535",
-      "decision": "unknown"
-    },
-    {
-      "id": "Q581-yes-Q583",
-      "source": "Q581",
-      "target": "Q583",
-      "decision": "yes"
-    },
-    {
-      "id": "Q581-no-Q584",
-      "source": "Q581",
-      "target": "Q584",
-      "decision": "no"
-    },
-    {
-      "id": "Q581-unknown-Q585",
-      "source": "Q581",
-      "target": "Q585",
-      "decision": "unknown"
-    },
-    {
-      "id": "Q582-yes-Q586",
-      "source": "Q582",
-      "target": "Q586",
-      "decision": "yes"
-    },
-    {
-      "id": "Q582-no-Q587",
-      "source": "Q582",
-      "target": "Q587",
-      "decision": "no"
-    },
-    {
-      "id": "Q582-unknown-Q588",
-      "source": "Q582",
-      "target": "Q588",
       "decision": "unknown"
     }
   ]

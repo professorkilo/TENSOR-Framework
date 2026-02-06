@@ -10,7 +10,11 @@
 - **Overlay layers**: additive constraints, fields, mappings, and workflow data for extensions/vendors/orgs.
 - Overlay layers may reference Core nodes/edges and add metadata, but they cannot remove or redefine Core semantics.
 - Core releases must provide explicit investigation entry points (`entryNodeIds`), and Core nodes must be reachable from at least one entry point.
+- Core is a routing/semantic backplane; concrete vendor investigative workflows are overlay responsibilities.
 - Extension metadata keys in Core (`extensions`) must be namespaced (`<namespace>:<field>`). Non-namespaced business/process fields belong in overlays.
+- Core graph structure remains investigation-first: deterministic `yes/no/unknown` branching for non-terminal nodes, terminal nodes with no outgoing edges, and an acyclic (DAG) topology.
+- Core node archetype taxonomy is fixed for v0.20260206c+ and evolves per release notes (v0.20260206e+: `detect`, `validate`, `classify`, `scope`, `correlate`, `attribute`, `impact`, `terminal`).
+- In Core, `terminal` denotes path termination semantics, not case workflow closure semantics.
 
 ## Versioning
 - Version format: `<MAJOR>.<YYYYMMDD>[letter]`.
@@ -31,3 +35,4 @@
 ## Conformance
 - Release contract conformance fixtures are in `standards/conformance/`.
 - CI must validate manifest shape, version formatting, latest pointer integrity, and checksum integrity before merge.
+- For releases `>= v0.20260206d`, CI also requires mathematical assurance artifacts per version plus `latest` and `history` math report pointers under `releases/core/reports/`.

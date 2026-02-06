@@ -1,0 +1,166 @@
+# TENSOR Core Graph Authoring Playbook
+
+## Purpose
+This playbook defines how to author and review the Core graph as an investigation backbone.
+
+Core remains investigation-semantic only:
+- No business workflow state
+- No ticket/case management semantics
+- No tool-specific execution steps
+- No vendor-specific operational playbook logic (implemented in overlays)
+
+Core is a neutral backplane:
+- Core standardizes investigation semantics and deterministic routing primitives.
+- Overlays (vendor/org/extension layers) define concrete investigative execution detail.
+
+## Canonical Sources
+Core graph content is authored from structured source files:
+- `drafts/core/source/nodes.jsonl`
+- `drafts/core/source/edges.jsonl`
+- `drafts/core/source/entry_nodes.json`
+
+Build output is generated via:
+- `python3 scripts/build_core_graph_from_source.py --version <VER>`
+
+Quality reports are generated via:
+- `python3 scripts/lint_core_graph_quality.py --version <VER>`
+  - Emits graph-quality, coverage-matrix, and math-assurance reports.
+  - Refreshes latest pointer and history artifacts for math assurance.
+  - Evaluates publish gates and fails when release thresholds are missed.
+
+## Node Authoring Model
+Required node fields:
+- `id`
+- `text`
+- `label`
+- `category`
+- `archetype`
+
+Optional node fields:
+- `extensions`
+
+### Category
+Allowed Core categories:
+- `Application`
+- `Cloud`
+- `Email`
+- `File`
+- `Host`
+- `Identity`
+- `Network`
+
+### Archetype
+Allowed archetypes:
+- `detect`
+- `validate`
+- `classify`
+- `scope`
+- `correlate`
+- `attribute`
+- `impact`
+- `terminal`
+
+`terminal` in Core means route termination for a hypothesis path, not case closure/business workflow completion.
+
+## Edge Authoring Model
+Required edge fields:
+- `id`
+- `source`
+- `target`
+- `decision`
+
+Optional edge fields:
+- `label`
+- `extensions`
+
+Edge id format:
+- `Q<source>-<decision>-Q<target>`
+
+Allowed decisions:
+- `yes`
+- `no`
+- `unknown`
+
+## Backbone Rules
+- Core graph must be a DAG (acyclic).
+- Every non-terminal node has exactly three outgoing edges:
+  - one `yes`
+  - one `no`
+  - one `unknown`
+- Terminal nodes have zero outgoing edges.
+- For each non-terminal node, each decision maps to exactly one target.
+- Every node must be reachable from at least one entry node.
+- `entryNodeIds` must include at least one valid entry node.
+- Entry sets are intentionally flexible; overlays may define additional/dynamic entry signals.
+- Semantic routing guardrails:
+  - `yes` edges must preserve forward investigative logic (`same archetype` or `next archetype` only).
+  - `yes` edges from `detect` and `validate` must stay within the same domain (no early-stage domain jumps on positive assertions).
+
+## Coverage and Scale Guidance
+- Node and edge counts are intentionally not fixed.
+- Expand the graph to the size needed for investigation quality and breadth.
+- Keep all seven domains represented with meaningful coverage.
+- Cross-domain edge ratio: >= 25%
+
+## Fan-In Constraints
+- Default max fan-in: 8
+- Exception max fan-in: 12
+- Exceptions must be listed in `entry_nodes.json` under `fanInExceptionNodeIds`
+
+## Text Quality Rules
+Node text must:
+- Be objective and evidence-focused
+- Be phrased as a question ending with `?`
+- Avoid workflow/tool/process language
+
+Forbidden examples in Core text:
+- `open a ticket`
+- `escalate to`
+- `run query in`
+- `click dashboard`
+
+## Release Workflow
+1. Author source files under `drafts/core/source/`.
+2. Build graph artifacts.
+3. Run quality lint and generate reports.
+4. Update schema snapshot/version when required changes are introduced.
+5. Update `releases/manifest.json` and latest pointers.
+6. Regenerate checksums.
+7. Run release contract validator.
+
+## Artifacts Required Per Release
+- Graph artifact:
+  - `releases/core/graphs/v<VER>/tensor.core.graph.json`
+- Schema artifact:
+  - `releases/core/schemas/v<VER>/tensor.core.schema.json`
+- Reports:
+  - `releases/core/reports/v<VER>/graph-quality.md`
+  - `releases/core/reports/v<VER>/graph-quality.json`
+  - `releases/core/reports/v<VER>/coverage-matrix.md`
+  - `releases/core/reports/v<VER>/coverage-matrix.json`
+  - `releases/core/reports/v<VER>/math-assurance.md`
+  - `releases/core/reports/v<VER>/math-assurance.json`
+- Monitoring artifacts:
+  - `releases/core/reports/latest/math-assurance.md`
+  - `releases/core/reports/latest/math-assurance.json`
+  - `releases/core/reports/history/math-assurance-history.md`
+  - `releases/core/reports/history/math-assurance-history.json`
+
+## Publish Gates
+Math assurance includes release-level publish gates under:
+- `monitoring.publishGates.allPassed`
+- `monitoring.publishGates.failedGateIds`
+- `monitoring.publishGates.gates[]`
+
+Current gate families include:
+- Structural invariants (DAG, reachability, branch totality)
+- Routing quality (cross-domain pivots, centralization)
+- Robustness (targeted reachability under node removal)
+- Information quality (no negative information gain)
+- Composite optimization score floor
+
+Gate outcomes are tracked per release in:
+- `releases/core/reports/history/math-assurance-history.json`
+
+## Pre-v1 Versioning Exception
+For approved pre-v1 releases, a full node-id reindex may be shipped without a major version bump when explicitly authorized in release notes.

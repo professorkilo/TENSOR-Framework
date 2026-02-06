@@ -1,14 +1,31 @@
 {
   "algorithm": "sha256",
   "files": {
-    "releases/core/graphs/latest/tensor.core.graph.json": "bba0d5371c08fcefc549d37aa0114ae3afb869b1b87db41a9c71d46a51e66a74",
+    "releases/core/graphs/latest/tensor.core.graph.json": "dfc3f1a965c01b6f7ade253e426e69abcbad688fab20d9d00065d71c777c010c",
     "releases/core/graphs/v0.20250519b/tensor.core.graph.json": "62b0e771294a8f57f1f9ef53c0018bfda39c7f7d22ed94332f8dce1616a0d3c0",
     "releases/core/graphs/v0.20250813/tensor.core.graph.json": "5e3a8e64251db4575cf531241f2ec1585b6835a2560466cacf0d6cf3eac2aaaf",
     "releases/core/graphs/v0.20260206/tensor.core.graph.json": "bba0d5371c08fcefc549d37aa0114ae3afb869b1b87db41a9c71d46a51e66a74",
-    "releases/core/schemas/latest/tensor.core.schema.json": "1fbf29577cdf04b169f4dd3f5d0f09af29cd0f2f4e2691d382bad0656a1d5fab",
+    "releases/core/graphs/v0.20260206c/tensor.core.graph.json": "368031e23ed399daa8e9abf19c3a21cc69349b8a12337437df2d748511056f83",
+    "releases/core/graphs/v0.20260206d/tensor.core.graph.json": "5ad1fbbea59cc1e7b273cf576730a877c84d13c438f08309ce635926275fef8f",
+    "releases/core/graphs/v0.20260206e/tensor.core.graph.json": "dfc3f1a965c01b6f7ade253e426e69abcbad688fab20d9d00065d71c777c010c",
+    "releases/core/reports/history/math-assurance-history.json": "3a3e5952c6f991e7be23cb7496db6fcd593cd7eb297fe0e61b3443a7ecbed474",
+    "releases/core/reports/latest/math-assurance.json": "399ffb41e9fda73a2766c40bde7ddbe1b11ed2c6937755f8e63be43ea2449893",
+    "releases/core/reports/v0.20260206c/coverage-matrix.json": "66109d93a4f95569d1de8f277772a48a896c30a114d31e35a1c548af44e390b4",
+    "releases/core/reports/v0.20260206c/graph-quality.json": "975eea444d73cdacc43e64e6b00d874c86de05aae4f7f4f0adc0d4e8946c744f",
+    "releases/core/reports/v0.20260206c/math-assurance.json": "ff3ef7a92e20d9ed06e010b9d791c3bca83220dde01200ba28690a7a3c3d2825",
+    "releases/core/reports/v0.20260206d/coverage-matrix.json": "a15516b180462013c3f62624b83fae43d0fb03d2fcf21cc9fe73d56994e2223e",
+    "releases/core/reports/v0.20260206d/graph-quality.json": "d3761cad3db417a92eec90ad91b464bf88a2c7f48cec09579590f82010d5fc03",
+    "releases/core/reports/v0.20260206d/math-assurance.json": "5dc6bca93b8a21edef09310fa00405b446077ef3252196cbd9ef93c86b89d2a1",
+    "releases/core/reports/v0.20260206e/coverage-matrix.json": "4d0c6eef81cfe664689c96c0109120e61cee02f1721551aa1bb766b578cabf4b",
+    "releases/core/reports/v0.20260206e/graph-quality.json": "dfe973780fcbfe9dd2998ca50cc9f70395af95aa0361b1e6503d0a8fbeb02aeb",
+    "releases/core/reports/v0.20260206e/math-assurance.json": "399ffb41e9fda73a2766c40bde7ddbe1b11ed2c6937755f8e63be43ea2449893",
+    "releases/core/schemas/latest/tensor.core.schema.json": "6520f4cd90c26d72252c986e4db7e8639c76e30f2f5c865a7318101c2a513ad5",
     "releases/core/schemas/v0.20250519/tensor.core.schema.json": "702d7c607d94d38c56468b3af0cd1c86bdd02b8744bab20cb38137b9ba6b7df5",
     "releases/core/schemas/v0.20250813/tensor.core.schema.json": "da89065a9a8d5be2f66082cdb44a18b7deb7399b197053d6a32239150d8dd5f1",
     "releases/core/schemas/v0.20260206/tensor.core.schema.json": "1fbf29577cdf04b169f4dd3f5d0f09af29cd0f2f4e2691d382bad0656a1d5fab",
-    "releases/manifest.json": "45ffac7cf16caa66369dcb5fd20aabe043ec999c6528044f0d8e4e0916f13dd4"
+    "releases/core/schemas/v0.20260206c/tensor.core.schema.json": "4b0ce8ea4861c44df93baf03e6c45f3745438ddda0f48c90001053877fb55674",
+    "releases/core/schemas/v0.20260206d/tensor.core.schema.json": "4b0ce8ea4861c44df93baf03e6c45f3745438ddda0f48c90001053877fb55674",
+    "releases/core/schemas/v0.20260206e/tensor.core.schema.json": "6520f4cd90c26d72252c986e4db7e8639c76e30f2f5c865a7318101c2a513ad5",
+    "releases/manifest.json": "713c94d5b066a1f6b2725cbdd8fc1c27956e95f3aa4d58b39f7d744f883174d8"
   }
 }

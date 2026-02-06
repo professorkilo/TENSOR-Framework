@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://tensor-standards-consortium.github.io/TENSOR-Framework/releases/core/schemas/v0.20260206e/tensor.core.schema.json",
+  "$id": "https://tensor-standards-consortium.github.io/TENSOR-Framework/releases/core/schemas/v0.20260206c/tensor.core.schema.json",
   "title": "TENSOR Framework Core Schema",
   "description": "Canonical schema for TENSOR investigation-only graphs (Core module).",
   "type": "object",

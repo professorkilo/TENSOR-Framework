@@ -13,6 +13,7 @@ Welcome to the public home of the **TENSOR Framework**. This repository holds th
 TENSOR-Framework/
 ├── drafts/                 # files that humans edit
 │   ├── core/               # canonical schema + graph
+│   │   └── source/         # canonical JSONL node/edge sources
 │   ├── extensions/         # consortium-maintained add-ons
 │   ├── vendors/<vendor>/<pack>/
 │   └── orgs/<org>/<module>/
@@ -24,11 +25,16 @@ TENSOR-Framework/
 │       ├── graphs/
 │       │   ├── latest/tensor.core.graph.json
 │       │   └── v<VER>/tensor.core.graph.json
+│       ├── reports/
+│       │   ├── latest/math-assurance.(md|json)
+│       │   ├── history/math-assurance-history.(md|json)
+│       │   └── v<VER>/(graph-quality|coverage-matrix|math-assurance).(md|json)
 │       └── schemas/
 │           ├── latest/tensor.core.schema.json
 │           └── v<VER>/tensor.core.schema.json
 └── standards/
     ├── compatibility-policy.md
+    ├── core-graph-authoring-playbook.md
     └── conformance/
         ├── manifest.json
         └── fixtures/(valid|invalid)/*.json
@@ -57,21 +63,30 @@ TENSOR-Framework/
 ### Editing basics
 
 1. Make changes only inside `drafts/`.
-2. Update `"version"` in both the schema and graph when you make a release breaking change (increment `MAJOR`) or a non‑breaking improvement (same `MAJOR`, new date).
-3. When creating a release, snapshot drafts into `releases/<...>/(schemas|graphs)/v<VER>/`, update `releases/manifest.json`, refresh `releases/core/*/latest/*`, then regenerate checksums.
-4. Run `python3 scripts/generate_release_checksums.py` and `python3 scripts/validate_release_contract.py` before opening a PR.
+2. For Core graph content, edit `drafts/core/source/nodes.jsonl`, `drafts/core/source/edges.jsonl`, and `drafts/core/source/entry_nodes.json`.
+3. Build Core graph artifacts with `python3 scripts/build_core_graph_from_source.py --version <VER>`.
+4. Generate quality + mathematical assurance artifacts with `python3 scripts/lint_core_graph_quality.py --version <VER>`.
+   This command enforces publish gates and fails if release thresholds are not met.
+5. Update `"version"` in both the schema and graph when you make a release breaking change (increment `MAJOR`) or a non‑breaking improvement (same `MAJOR`, new date).
+6. When creating a release, snapshot drafts into `releases/<...>/(schemas|graphs)/v<VER>/`, update `releases/manifest.json`, refresh `releases/core/*/latest/*`, then regenerate checksums.
+7. Run `python3 scripts/generate_release_checksums.py` and `python3 scripts/validate_release_contract.py` before opening a PR.
 
 ### Machine-readable release contract
 
 * `releases/manifest.json` is the stable catalog for client applications.
 * `releases/core/graphs/latest/tensor.core.graph.json` and `releases/core/schemas/latest/tensor.core.schema.json` are pointer artifacts for default client loading.
+* `releases/core/reports/latest/math-assurance.json` is a stable pointer for the latest mathematical assurance report.
+* Each release math-assurance payload includes `monitoring.publishGates` so clients can check publish-readiness directly.
+* Historical trend data (including publish-ready status per release) is published at `releases/core/reports/history/math-assurance-history.json`.
 * `releases/checksums.json` provides sha256 integrity metadata for all JSON release artifacts under `releases/`.
 
 ### Semantic governance and overlays
 
 * Core (`releases/core/**`) remains vendor-neutral and defines canonical investigative semantics.
 * Business logic belongs in overlays (`extensions/`, `vendors/`, `orgs/`) that extend Core without redefining Core meaning.
-* Core flow is explicit via `entryNodeIds`; overlays may add workflow logic but must not redefine investigative questions/branches.
+* Core is a routing/semantic backplane, not a vendor playbook. Domain-specific investigative execution belongs in overlays.
+* Core enforces semantic edge guardrails so positive early-stage findings (`detect`/`validate` with `yes`) do not jump into unrelated domains.
+* Core flow is explicit via `entryNodeIds`; overlays may add arbitrary/dynamic entry signals and workflow logic without redefining Core branch semantics.
 * Extension keys use namespaced identifiers (`<namespace>:<field>`) to prevent business-process metadata from leaking into Core semantics.
 * Compatibility/deprecation requirements are defined in `standards/compatibility-policy.md`.
 

@@ -1,0 +1,73 @@
+{
+  "generatedAt": "2026-02-06T15:54:29Z",
+  "series": [
+    {
+      "version": "0.20260206c",
+      "generatedAt": "2026-02-06T14:23:29Z",
+      "overallScore": 76.379419,
+      "coverageScore": 67.8571,
+      "routingScore": 100.0,
+      "informationScore": 35.172145,
+      "robustnessScore": 94.9393,
+      "reachableRatio": 1.0,
+      "branchCompletenessRatio": 1.0,
+      "targetedReachabilityAt5Percent": 0.949393,
+      "meanInformationGain": 0.271179,
+      "publishReady": null,
+      "failedGateCount": 0,
+      "failedGateIds": []
+    },
+    {
+      "version": "0.20260206d",
+      "generatedAt": "2026-02-06T15:02:32Z",
+      "overallScore": 82.054593,
+      "coverageScore": 100.0,
+      "routingScore": 100.0,
+      "informationScore": 24.247567,
+      "robustnessScore": 86.0254,
+      "reachableRatio": 1.0,
+      "branchCompletenessRatio": 1.0,
+      "targetedReachabilityAt5Percent": 0.860254,
+      "meanInformationGain": 0.658046,
+      "publishReady": null,
+      "failedGateCount": 0,
+      "failedGateIds": []
+    },
+    {
+      "version": "0.20260206e",
+      "generatedAt": "2026-02-06T15:54:29Z",
+      "overallScore": 82.462334,
+      "coverageScore": 100.0,
+      "routingScore": 100.0,
+      "informationScore": 24.118471,
+      "robustnessScore": 88.1932,
+      "reachableRatio": 1.0,
+      "branchCompletenessRatio": 1.0,
+      "targetedReachabilityAt5Percent": 0.881932,
+      "meanInformationGain": 0.659153,
+      "publishReady": true,
+      "failedGateCount": 0,
+      "failedGateIds": []
+    }
+  ],
+  "deltas": [
+    {
+      "fromVersion": "0.20260206c",
+      "toVersion": "0.20260206d",
+      "overallScoreDelta": 5.675174,
+      "coverageScoreDelta": 32.1429,
+      "routingScoreDelta": 0.0,
+      "informationScoreDelta": -10.924578,
+      "robustnessScoreDelta": -8.9139
+    },
+    {
+      "fromVersion": "0.20260206d",
+      "toVersion": "0.20260206e",
+      "overallScoreDelta": 0.407741,
+      "coverageScoreDelta": 0.0,
+      "routingScoreDelta": 0.0,
+      "informationScoreDelta": -0.129096,
+      "robustnessScoreDelta": 2.1678
+    }
+  ]
+}

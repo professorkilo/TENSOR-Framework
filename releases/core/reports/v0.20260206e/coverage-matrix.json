@@ -1,0 +1,126 @@
+{
+  "version": "0.20260206e",
+  "generatedAt": "2026-02-06T15:54:28Z",
+  "dimensions": [
+    "Domain",
+    "Archetype",
+    "Entry Coverage",
+    "Reachability",
+    "Branch Completeness",
+    "Cross-domain Pivots"
+  ],
+  "overall": {
+    "nodeCount": 588,
+    "edgeCount": 1554,
+    "crossDomainRatio": 0.648005148005148,
+    "allNodesReachable": true,
+    "branchViolations": 0
+  },
+  "domains": [
+    {
+      "domain": "Application",
+      "nodeCount": 75,
+      "entryCoverage": true,
+      "archetypes": {
+        "detect": 10,
+        "validate": 10,
+        "classify": 10,
+        "scope": 10,
+        "correlate": 9,
+        "attribute": 9,
+        "impact": 9,
+        "terminal": 8
+      }
+    },
+    {
+      "domain": "Cloud",
+      "nodeCount": 85,
+      "entryCoverage": true,
+      "archetypes": {
+        "detect": 11,
+        "validate": 11,
+        "classify": 11,
+        "scope": 10,
+        "correlate": 10,
+        "attribute": 10,
+        "impact": 11,
+        "terminal": 11
+      }
+    },
+    {
+      "domain": "Email",
+      "nodeCount": 80,
+      "entryCoverage": true,
+      "archetypes": {
+        "detect": 11,
+        "validate": 11,
+        "classify": 10,
+        "scope": 10,
+        "correlate": 10,
+        "attribute": 10,
+        "impact": 9,
+        "terminal": 9
+      }
+    },
+    {
+      "domain": "File",
+      "nodeCount": 73,
+      "entryCoverage": true,
+      "archetypes": {
+        "detect": 10,
+        "validate": 10,
+        "classify": 10,
+        "scope": 9,
+        "correlate": 9,
+        "attribute": 7,
+        "impact": 7,
+        "terminal": 11
+      }
+    },
+    {
+      "domain": "Host",
+      "nodeCount": 95,
+      "entryCoverage": true,
+      "archetypes": {
+        "detect": 13,
+        "validate": 12,
+        "classify": 12,
+        "scope": 12,
+        "correlate": 12,
+        "attribute": 12,
+        "impact": 11,
+        "terminal": 11
+      }
+    },
+    {
+      "domain": "Identity",
+      "nodeCount": 95,
+      "entryCoverage": true,
+      "archetypes": {
+        "detect": 13,
+        "validate": 13,
+        "classify": 12,
+        "scope": 12,
+        "correlate": 12,
+        "attribute": 12,
+        "impact": 11,
+        "terminal": 10
+      }
+    },
+    {
+      "domain": "Network",
+      "nodeCount": 85,
+      "entryCoverage": true,
+      "archetypes": {
+        "detect": 12,
+        "validate": 11,
+        "classify": 11,
+        "scope": 11,
+        "correlate": 10,
+        "attribute": 10,
+        "impact": 10,
+        "terminal": 10
+      }
+    }
+  ]
+}

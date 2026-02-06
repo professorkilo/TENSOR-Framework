@@ -1,0 +1,149 @@
+{
+  "version": "0.20260206d",
+  "errors": [],
+  "warnings": [],
+  "metrics": {
+    "nodeCount": 580,
+    "edgeCount": 1548,
+    "nonTerminalCount": 516,
+    "terminalCount": 64,
+    "entryCount": 16,
+    "entryNodeIds": [
+      "Q1",
+      "Q2",
+      "Q3",
+      "Q4",
+      "Q5",
+      "Q6",
+      "Q7",
+      "Q9",
+      "Q17",
+      "Q25",
+      "Q33",
+      "Q41",
+      "Q49",
+      "Q57",
+      "Q65",
+      "Q73"
+    ],
+    "entryCoverageByDomain": {
+      "Application": true,
+      "Cloud": true,
+      "Email": true,
+      "File": true,
+      "Host": true,
+      "Identity": true,
+      "Network": true
+    },
+    "domainCounts": {
+      "Application": 75,
+      "Cloud": 85,
+      "Email": 80,
+      "File": 65,
+      "Host": 95,
+      "Identity": 95,
+      "Network": 85
+    },
+    "archetypeCounts": {
+      "attribute": 70,
+      "classify": 76,
+      "terminal": 64,
+      "correlate": 72,
+      "detect": 80,
+      "impact": 66,
+      "scope": 74,
+      "validate": 78
+    },
+    "domainArchetypeMatrix": {
+      "Application": {
+        "detect": 10,
+        "validate": 10,
+        "classify": 10,
+        "scope": 10,
+        "correlate": 9,
+        "attribute": 9,
+        "impact": 9,
+        "terminal": 8
+      },
+      "Cloud": {
+        "detect": 11,
+        "validate": 11,
+        "classify": 11,
+        "scope": 10,
+        "correlate": 10,
+        "attribute": 10,
+        "impact": 11,
+        "terminal": 11
+      },
+      "Email": {
+        "detect": 11,
+        "validate": 11,
+        "classify": 10,
+        "scope": 10,
+        "correlate": 10,
+        "attribute": 10,
+        "impact": 9,
+        "terminal": 9
+      },
+      "File": {
+        "detect": 10,
+        "validate": 10,
+        "classify": 10,
+        "scope": 9,
+        "correlate": 9,
+        "attribute": 7,
+        "impact": 5,
+        "terminal": 5
+      },
+      "Host": {
+        "detect": 13,
+        "validate": 12,
+        "classify": 12,
+        "scope": 12,
+        "correlate": 12,
+        "attribute": 12,
+        "impact": 11,
+        "terminal": 11
+      },
+      "Identity": {
+        "detect": 13,
+        "validate": 13,
+        "classify": 12,
+        "scope": 12,
+        "correlate": 12,
+        "attribute": 12,
+        "impact": 11,
+        "terminal": 10
+      },
+      "Network": {
+        "detect": 12,
+        "validate": 11,
+        "classify": 11,
+        "scope": 11,
+        "correlate": 10,
+        "attribute": 10,
+        "impact": 10,
+        "terminal": 10
+      }
+    },
+    "crossDomainEdgeCount": 1008,
+    "crossDomainRatio": 0.6511627906976745,
+    "crossDomainRatioMin": 0.25,
+    "fanInDefaultLimit": 8,
+    "fanInExceptionLimit": 12,
+    "maxFanIn": 6,
+    "fanInExceptionNodeIds": [],
+    "fanInExceptionNodesUsed": [],
+    "branchDeterminism": {
+      "requiredDecisions": [
+        "yes",
+        "no",
+        "unknown"
+      ],
+      "violations": 0
+    },
+    "dagPass": true,
+    "reachableNodeCount": 580,
+    "allNodesReachable": true
+  }
+}

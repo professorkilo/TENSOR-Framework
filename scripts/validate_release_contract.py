@@ -43,6 +43,19 @@ NODE_ID_RE = re.compile(r"^Q[1-9]\d*$")
 EDGE_ID_RE = re.compile(r"^(Q[1-9]\d*)-(yes|no|unknown)-(Q[1-9]\d*)$")
 DECISIONS = {"yes", "no", "unknown"}
 ENFORCEMENT_VERSION = (0, 20260206, "")
+ARCHETYPE_ENFORCEMENT_VERSION = (0, 20260206, "c")
+MATH_ASSURANCE_ENFORCEMENT_VERSION = (0, 20260206, "d")
+PUBLISH_GATES_ENFORCEMENT_VERSION = (0, 20260206, "e")
+REQUIRED_ARCHETYPES = {
+    "detect",
+    "validate",
+    "classify",
+    "scope",
+    "correlate",
+    "attribute",
+    "impact",
+    "terminal",
+}
 
 
 def load_json(path: Path) -> Any:
@@ -371,6 +384,30 @@ def schema_enforces_namespaced_extensions(schema: Any) -> bool:
     return any(":" in pattern for pattern in patterns)
 
 
+def schema_requires_node_archetype(schema: Any, required_archetypes: set[str]) -> bool:
+    if not isinstance(schema, dict):
+        return False
+    defs = schema.get("$defs")
+    if not isinstance(defs, dict):
+        return False
+    node_flat = defs.get("nodeFlat")
+    if not isinstance(node_flat, dict):
+        return False
+    required = node_flat.get("required")
+    if not isinstance(required, list) or "archetype" not in required:
+        return False
+    properties = node_flat.get("properties")
+    if not isinstance(properties, dict):
+        return False
+    archetype = properties.get("archetype")
+    if not isinstance(archetype, dict):
+        return False
+    enum = archetype.get("enum")
+    if not isinstance(enum, list):
+        return False
+    return set(enum) == required_archetypes
+
+
 def validate_graph_semantics(
     graph: Any,
     schema: Any,
@@ -413,9 +450,18 @@ def validate_graph_semantics(
         edges_raw = []
 
     node_ids: set[str] = set()
+    node_categories: dict[str, str] = {}
     edge_ids: set[str] = set()
     parsed_edges: list[dict[str, str]] = []
     seen_branch_tuples: set[tuple[str, str, str]] = set()
+    seen_source_decisions: set[tuple[str, str]] = set()
+    outgoing_by_source: dict[str, set[str]] = defaultdict(set)
+
+    requires_archetype = (
+        isinstance(graph_version, str)
+        and version_at_least(graph_version, ARCHETYPE_ENFORCEMENT_VERSION)
+    )
+    required_archetypes = REQUIRED_ARCHETYPES if requires_archetype else set()
 
     wrapped_nodes = 0
     for idx, raw_node in enumerate(nodes_raw):
@@ -437,6 +483,20 @@ def validate_graph_semantics(
             errors.append(f"{context}.graphPath has duplicate node id: {node_id}")
             continue
         node_ids.add(node_id)
+
+        category = payload.get("category")
+        if isinstance(category, str):
+            node_categories[node_id] = category
+        elif category is not None:
+            errors.append(f"{context}.graphPath nodes[{idx}] category must be a string when provided.")
+
+        if requires_archetype:
+            archetype = payload.get("archetype")
+            if not isinstance(archetype, str) or archetype not in required_archetypes:
+                allowed = ", ".join(sorted(required_archetypes))
+                errors.append(
+                    f"{context}.graphPath nodes[{idx}] archetype must be one of [{allowed}] for this release."
+                )
 
     wrapped_edges = 0
     for idx, raw_edge in enumerate(edges_raw):
@@ -479,6 +539,11 @@ def validate_graph_semantics(
             errors.append(f"{context}.graphPath edges[{idx}] target id is malformed: {target!r}")
         if decision not in DECISIONS:
             errors.append(f"{context}.graphPath edges[{idx}] decision must be one of yes/no/unknown.")
+        if requires_archetype and NODE_ID_RE.fullmatch(source) and NODE_ID_RE.fullmatch(target):
+            if int(target[1:]) <= int(source[1:]):
+                errors.append(
+                    f"{context}.graphPath edges[{idx}] must point to a higher node id to preserve DAG ordering."
+                )
 
         match = EDGE_ID_RE.fullmatch(edge_id)
         if match and (source != match.group(1) or decision != match.group(2) or target != match.group(3)):
@@ -492,6 +557,14 @@ def validate_graph_semantics(
                 f"{context}.graphPath has duplicate branch tuple source={source}, decision={decision}, target={target}."
             )
         seen_branch_tuples.add(branch_tuple)
+        source_decision = (source, decision)
+        if requires_archetype:
+            if source_decision in seen_source_decisions:
+                errors.append(
+                    f"{context}.graphPath has non-deterministic branching for source={source}, decision={decision}."
+                )
+            seen_source_decisions.add(source_decision)
+        outgoing_by_source[source].add(decision)
         parsed_edges.append({"id": edge_id, "source": source, "target": target, "decision": decision})
 
     for edge in parsed_edges:
@@ -522,6 +595,10 @@ def validate_graph_semantics(
     if requires_new_semantics and not schema_enforces_namespaced_extensions(schema):
         errors.append(
             f"{context}.schemaPath must enforce namespaced extension keys (<namespace>:<field>)."
+        )
+    if requires_archetype and not schema_requires_node_archetype(schema, required_archetypes):
+        errors.append(
+            f"{context}.schemaPath must require node archetype with the approved archetype enum."
         )
     if requires_new_semantics and wrapped_nodes > 0:
         errors.append(
@@ -592,6 +669,14 @@ def validate_graph_semantics(
                         f"{context}.graphPath has nodes unreachable from entryNodeIds: {preview}{suffix}"
                     )
 
+    if requires_archetype:
+        for node_id in node_ids:
+            decisions = outgoing_by_source.get(node_id, set())
+            if decisions and decisions != DECISIONS:
+                errors.append(
+                    f"{context}.graphPath node {node_id} must expose yes/no/unknown when non-terminal."
+                )
+
     return errors
 
 
@@ -639,6 +724,168 @@ def validate_release_graph_semantics(manifest: Any) -> list[str]:
                 continue
 
         errors.extend(validate_graph_semantics(graph, schema, release, context))
+
+    return errors
+
+
+def validate_release_report_artifacts(manifest: Any) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(manifest, dict):
+        return errors
+
+    latest_graph_version = manifest.get("latestGraphVersion")
+    releases = manifest.get("releases")
+    if not isinstance(releases, list):
+        return errors
+
+    required_report_files = [
+        "graph-quality.json",
+        "graph-quality.md",
+        "coverage-matrix.json",
+        "coverage-matrix.md",
+        "math-assurance.json",
+        "math-assurance.md",
+    ]
+
+    for idx, release in enumerate(releases):
+        context = f"releases[{idx}]"
+        if not isinstance(release, dict):
+            continue
+        graph_version = release.get("graphVersion")
+        if not isinstance(graph_version, str):
+            continue
+        if not version_at_least(graph_version, MATH_ASSURANCE_ENFORCEMENT_VERSION):
+            continue
+
+        version_dir = REPO_ROOT / f"releases/core/reports/v{graph_version}"
+        for filename in required_report_files:
+            report_path = version_dir / filename
+            if not report_path.is_file():
+                errors.append(
+                    f"{context} missing required report artifact: {report_path.relative_to(REPO_ROOT)}"
+                )
+
+        math_json_path = version_dir / "math-assurance.json"
+        if math_json_path.is_file():
+            try:
+                payload = load_json(math_json_path)
+            except RuntimeError as exc:
+                errors.append(str(exc))
+            else:
+                if not isinstance(payload, dict):
+                    errors.append(
+                        f"{context} math assurance payload must be a JSON object: {math_json_path.relative_to(REPO_ROOT)}"
+                    )
+                else:
+                    if payload.get("version") != graph_version:
+                        errors.append(
+                            f"{context} math assurance version mismatch in {math_json_path.relative_to(REPO_ROOT)}"
+                        )
+                    if "summary" not in payload or "theories" not in payload:
+                        errors.append(
+                            f"{context} math assurance payload missing summary/theories in {math_json_path.relative_to(REPO_ROOT)}"
+                        )
+                    if version_at_least(graph_version, PUBLISH_GATES_ENFORCEMENT_VERSION):
+                        monitoring = payload.get("monitoring")
+                        if not isinstance(monitoring, dict):
+                            errors.append(
+                                f"{context} math assurance payload missing monitoring object in {math_json_path.relative_to(REPO_ROOT)}"
+                            )
+                        else:
+                            publish_gates = monitoring.get("publishGates")
+                            if not isinstance(publish_gates, dict):
+                                errors.append(
+                                    f"{context} math assurance payload missing monitoring.publishGates in {math_json_path.relative_to(REPO_ROOT)}"
+                                )
+                            else:
+                                all_passed = publish_gates.get("allPassed")
+                                gates = publish_gates.get("gates")
+                                failed_gate_ids = publish_gates.get("failedGateIds")
+                                if not isinstance(all_passed, bool):
+                                    errors.append(
+                                        f"{context} monitoring.publishGates.allPassed must be boolean in {math_json_path.relative_to(REPO_ROOT)}"
+                                    )
+                                if not isinstance(gates, list) or not gates:
+                                    errors.append(
+                                        f"{context} monitoring.publishGates.gates must be a non-empty array in {math_json_path.relative_to(REPO_ROOT)}"
+                                    )
+                                if not isinstance(failed_gate_ids, list):
+                                    errors.append(
+                                        f"{context} monitoring.publishGates.failedGateIds must be an array in {math_json_path.relative_to(REPO_ROOT)}"
+                                    )
+                                if all_passed is False:
+                                    rendered = ", ".join(str(item) for item in failed_gate_ids) if isinstance(failed_gate_ids, list) else "unknown"
+                                    errors.append(
+                                        f"{context} publish gates failed in {math_json_path.relative_to(REPO_ROOT)}: {rendered}"
+                                    )
+
+    if (
+        isinstance(latest_graph_version, str)
+        and VERSION_RE.fullmatch(latest_graph_version)
+        and version_at_least(latest_graph_version, MATH_ASSURANCE_ENFORCEMENT_VERSION)
+    ):
+        expected_latest_math_json = REPO_ROOT / f"releases/core/reports/v{latest_graph_version}/math-assurance.json"
+        expected_latest_math_md = REPO_ROOT / f"releases/core/reports/v{latest_graph_version}/math-assurance.md"
+        latest_math_json = REPO_ROOT / "releases/core/reports/latest/math-assurance.json"
+        latest_math_md = REPO_ROOT / "releases/core/reports/latest/math-assurance.md"
+        history_json = REPO_ROOT / "releases/core/reports/history/math-assurance-history.json"
+        history_md = REPO_ROOT / "releases/core/reports/history/math-assurance-history.md"
+
+        if not latest_math_json.is_file():
+            errors.append("Missing latest math assurance pointer: releases/core/reports/latest/math-assurance.json")
+        if not latest_math_md.is_file():
+            errors.append("Missing latest math assurance pointer: releases/core/reports/latest/math-assurance.md")
+        if not history_json.is_file():
+            errors.append("Missing math assurance history: releases/core/reports/history/math-assurance-history.json")
+        if not history_md.is_file():
+            errors.append("Missing math assurance history: releases/core/reports/history/math-assurance-history.md")
+
+        if expected_latest_math_json.is_file() and latest_math_json.is_file():
+            if expected_latest_math_json.read_bytes() != latest_math_json.read_bytes():
+                errors.append(
+                    "Latest math assurance JSON pointer does not match "
+                    f"releases/core/reports/v{latest_graph_version}/math-assurance.json"
+                )
+        if expected_latest_math_md.is_file() and latest_math_md.is_file():
+            if expected_latest_math_md.read_bytes() != latest_math_md.read_bytes():
+                errors.append(
+                    "Latest math assurance Markdown pointer does not match "
+                    f"releases/core/reports/v{latest_graph_version}/math-assurance.md"
+                )
+
+        if history_json.is_file():
+            try:
+                history_payload = load_json(history_json)
+            except RuntimeError as exc:
+                errors.append(str(exc))
+            else:
+                if not isinstance(history_payload, dict):
+                    errors.append("Math assurance history payload must be an object.")
+                else:
+                    series = history_payload.get("series")
+                    if not isinstance(series, list):
+                        errors.append("Math assurance history payload must define series as an array.")
+                    else:
+                        latest_series_entry = None
+                        for item in series:
+                            if isinstance(item, dict) and item.get("version") == latest_graph_version:
+                                latest_series_entry = item
+                                break
+                        if latest_series_entry is None:
+                            errors.append(
+                                "Math assurance history series is missing an entry for latestGraphVersion "
+                                f"{latest_graph_version}."
+                            )
+                        elif version_at_least(latest_graph_version, PUBLISH_GATES_ENFORCEMENT_VERSION):
+                            publish_ready = latest_series_entry.get("publishReady")
+                            if not isinstance(publish_ready, bool):
+                                errors.append(
+                                    "Latest math assurance history entry must include boolean publishReady."
+                                )
+                            elif not publish_ready:
+                                errors.append(
+                                    "Latest math assurance history entry indicates publishReady=false."
+                                )
 
     return errors
 
@@ -700,6 +947,7 @@ def main() -> int:
 
     errors = validate_manifest(manifest)
     errors.extend(validate_release_graph_semantics(manifest))
+    errors.extend(validate_release_report_artifacts(manifest))
 
     if not args.skip_checksum_validation:
         try:
