@@ -1,0 +1,34 @@
+{
+  "channel": "stable",
+  "generatedAt": "2026-02-06T04:53:07Z",
+  "latestGraphVersion": "0.20250813",
+  "latestSchemaVersion": "0.20250813",
+  "releases": [
+    {
+      "id": "core-0.20250519b",
+      "displayName": "TENSOR Core v0.20250519b",
+      "releasedAt": "2025-05-19",
+      "graphVersion": "0.20250519b",
+      "schemaVersion": "0.20250519",
+      "graphPath": "releases/core/graphs/v0.20250519b/tensor.core.graph.json",
+      "schemaPath": "releases/core/schemas/v0.20250519/tensor.core.schema.json",
+      "notes": [
+        "Initial immutable core snapshot for public release distribution.",
+        "Pairs graph v0.20250519b with schema v0.20250519."
+      ]
+    },
+    {
+      "id": "core-0.20250813",
+      "displayName": "TENSOR Core v0.20250813",
+      "releasedAt": "2025-08-13",
+      "graphVersion": "0.20250813",
+      "schemaVersion": "0.20250813",
+      "graphPath": "releases/core/graphs/v0.20250813/tensor.core.graph.json",
+      "schemaPath": "releases/core/schemas/v0.20250813/tensor.core.schema.json",
+      "notes": [
+        "Current stable core release for machine-readable clients.",
+        "Latest graph/schema pointers resolve to this release."
+      ]
+    }
+  ]
+}

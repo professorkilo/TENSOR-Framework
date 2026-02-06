@@ -1,0 +1,12 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "releases/core/graphs/latest/tensor.core.graph.json": "5e3a8e64251db4575cf531241f2ec1585b6835a2560466cacf0d6cf3eac2aaaf",
+    "releases/core/graphs/v0.20250519b/tensor.core.graph.json": "62b0e771294a8f57f1f9ef53c0018bfda39c7f7d22ed94332f8dce1616a0d3c0",
+    "releases/core/graphs/v0.20250813/tensor.core.graph.json": "5e3a8e64251db4575cf531241f2ec1585b6835a2560466cacf0d6cf3eac2aaaf",
+    "releases/core/schemas/latest/tensor.core.schema.json": "da89065a9a8d5be2f66082cdb44a18b7deb7399b197053d6a32239150d8dd5f1",
+    "releases/core/schemas/v0.20250519/tensor.core.schema.json": "702d7c607d94d38c56468b3af0cd1c86bdd02b8744bab20cb38137b9ba6b7df5",
+    "releases/core/schemas/v0.20250813/tensor.core.schema.json": "da89065a9a8d5be2f66082cdb44a18b7deb7399b197053d6a32239150d8dd5f1",
+    "releases/manifest.json": "c5e4a2b0c18b5308c80b912c77bdc59632bbe8c2bd9aad577cdb20375ce3c2dd"
+  }
+}

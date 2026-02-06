@@ -30,14 +30,18 @@ jobs:
           mkdir -p releases/core/schemas/latest
           cp -f "releases/core/graphs/${{ steps.find_latest.outputs.latest_graph }}/tensor.core.graph.json" releases/core/graphs/latest/tensor.core.graph.json
           cp -f "releases/core/schemas/${{ steps.find_latest.outputs.latest_schema }}/tensor.core.schema.json" releases/core/schemas/latest/tensor.core.schema.json
+          python3 scripts/generate_release_checksums.py
 
       - name: Commit and push changes
         run: |
           git config user.name "GitHub Action"
           git config user.email "actions@github.com"
-          git add releases/core/graphs/latest/tensor.core.graph.json releases/core/schemas/latest/tensor.core.schema.json
+          git add \
+            releases/core/graphs/latest/tensor.core.graph.json \
+            releases/core/schemas/latest/tensor.core.schema.json \
+            releases/checksums.json
           if [ -n "$(git status --porcelain)" ]; then
-            git commit -m "Update latest core graph and schema to ${{ steps.find_latest.outputs.latest_graph }}"
+            git commit -m "Update latest core graph/schema and checksums"
             git push
           fi
         env:

@@ -1,0 +1,20 @@
+{
+  "channel": "stable",
+  "generatedAt": "2025-08-13T12:00:00Z",
+  "latestGraphVersion": "v0.20250813",
+  "latestSchemaVersion": "0.20250813",
+  "releases": [
+    {
+      "id": "core-0.20250813",
+      "displayName": "TENSOR Core v0.20250813",
+      "releasedAt": "2025-08-13",
+      "graphVersion": "0.20250813",
+      "schemaVersion": "0.20250813",
+      "graphPath": "releases/core/graphs/v0.20250813/tensor.core.graph.json",
+      "schemaPath": "releases/core/schemas/v0.20250813/tensor.core.schema.json",
+      "notes": [
+        "Invalid fixture: malformed version string with v-prefix."
+      ]
+    }
+  ]
+}

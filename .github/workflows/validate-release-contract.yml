@@ -1,0 +1,33 @@
+name: Validate Release Contract
+
+on:
+  pull_request:
+    paths:
+      - 'releases/**'
+      - 'scripts/validate_release_contract.py'
+      - 'scripts/generate_release_checksums.py'
+      - 'standards/**'
+      - '.github/workflows/validate-release-contract.yml'
+  push:
+    branches: [ main ]
+    paths:
+      - 'releases/**'
+      - 'scripts/validate_release_contract.py'
+      - 'scripts/generate_release_checksums.py'
+      - 'standards/**'
+      - '.github/workflows/validate-release-contract.yml'
+
+jobs:
+  validate-release-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Validate release contract
+        run: python3 scripts/validate_release_contract.py
