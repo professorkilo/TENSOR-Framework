@@ -26,6 +26,11 @@ def parse_args() -> argparse.Namespace:
         help="Release version in <MAJOR>.<YYYYMMDD>[REV] format (for example: 0.20260206c).",
     )
     parser.add_argument(
+        "--draft-only",
+        action="store_true",
+        help="Write only drafts/core/tensor.core.graph.json (do not touch releases/).",
+    )
+    parser.add_argument(
         "--repo-root",
         default=Path(__file__).resolve().parent.parent,
         type=Path,
@@ -90,20 +95,22 @@ def main() -> int:
         )
 
         draft_graph_path = repo_root / "drafts/core/tensor.core.graph.json"
-        release_graph_path = repo_root / f"releases/core/graphs/v{args.version}/tensor.core.graph.json"
-        latest_graph_path = repo_root / "releases/core/graphs/latest/tensor.core.graph.json"
 
         write_json(draft_graph_path, payload)
-        write_json(release_graph_path, payload)
-        write_json(latest_graph_path, payload)
+        if not args.draft_only:
+            release_graph_path = repo_root / f"releases/core/graphs/v{args.version}/tensor.core.graph.json"
+            latest_graph_path = repo_root / "releases/core/graphs/latest/tensor.core.graph.json"
+            write_json(release_graph_path, payload)
+            write_json(latest_graph_path, payload)
 
         print(f"Built graph version: {args.version}")
         print(f"Generated at: {canonical_generated_at(args.version)}")
         print(f"Nodes: {metrics['nodeCount']} | Edges: {metrics['edgeCount']}")
         print(f"Entry nodes: {metrics['entryCount']} | Cross-domain ratio: {metrics['crossDomainRatio']:.4f}")
         print(f"Draft output: {draft_graph_path.relative_to(repo_root)}")
-        print(f"Release output: {release_graph_path.relative_to(repo_root)}")
-        print(f"Latest output: {latest_graph_path.relative_to(repo_root)}")
+        if not args.draft_only:
+            print(f"Release output: {release_graph_path.relative_to(repo_root)}")
+            print(f"Latest output: {latest_graph_path.relative_to(repo_root)}")
         return 0
 
     except ValidationError as exc:

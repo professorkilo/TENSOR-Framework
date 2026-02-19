@@ -9,6 +9,13 @@ Core remains investigation-semantic only:
 - No tool-specific execution steps
 - No vendor-specific operational playbook logic (implemented in overlays)
 
+## Core vs Overlay Contract
+
+Core provides guard rails and a shared technical language for investigations; overlays implement
+business process and product/tool execution detail on top of Core.
+
+Authoring and review MUST follow: `standards/core-vs-overlay-contract.md`.
+
 Core is a neutral backplane:
 - Core standardizes investigation semantics and deterministic routing primitives.
 - Overlays (vendor/org/extension layers) define concrete investigative execution detail.
@@ -103,15 +110,22 @@ Allowed decisions:
 - Cross-domain edge ratio: >= 25%
 
 ## Fan-In Constraints
-- Default max fan-in: 8
-- Exception max fan-in: 12
-- Exceptions must be listed in `entry_nodes.json` under `fanInExceptionNodeIds`
+- Default max fan-in (non-terminal nodes): 8
+- Exception max fan-in (non-terminal nodes): 12
+- Terminal max fan-in (sink nodes): 24
+- Non-terminal exceptions must be listed in `entry_nodes.json` under `fanInExceptionNodeIds`
 
 ## Text Quality Rules
+Node labels must:
+- Be short and graph-readable.
+- Start with the node domain in the form `<Domain>:` (for example: `Email:`).
+- Avoid numeric template labels (for example: `Email detect 12`).
+
 Node text must:
 - Be objective and evidence-focused
 - Be phrased as a question ending with `?`
 - Avoid workflow/tool/process language
+- Avoid incident-type or case-typing language (incident naming belongs in overlays)
 
 Forbidden examples in Core text:
 - `open a ticket`

@@ -39,6 +39,9 @@ DECISION_ORDER = {value: index for index, value in enumerate(DECISIONS)}
 CROSS_DOMAIN_RATIO_MIN = 0.25
 FANIN_DEFAULT_LIMIT = 8
 FANIN_EXCEPTION_LIMIT = 12
+# Terminal (sink) nodes can tolerate higher fan-in because they do not introduce new branching
+# options for investigators; consolidating terminal nodes reduces graph surface area.
+FANIN_TERMINAL_LIMIT = 24
 
 NODE_ID_RE = re.compile(r"^Q[1-9]\d*$")
 EDGE_ID_RE = re.compile(r"^(Q[1-9]\d*)-(yes|no|unknown)-(Q[1-9]\d*)$")
@@ -60,6 +63,24 @@ BANNED_TEXT_TERMS = (
     "playbook",
     "workflow",
     "assign owner",
+)
+
+CORE_BANNED_SEMANTIC_PATTERNS: tuple[tuple[re.Pattern[str], str], ...] = (
+    # Core must not pre-type investigations into incident categories.
+    (re.compile(r"\bphishing\b", re.IGNORECASE), "incident-type term"),
+    (re.compile(r"\bbec\b", re.IGNORECASE), "incident-type term"),
+    (re.compile(r"\bbusiness\s+email\s+compromise\b", re.IGNORECASE), "incident-type term"),
+    (re.compile(r"\bransomware\b", re.IGNORECASE), "incident-type term"),
+    (re.compile(r"\bddos\b", re.IGNORECASE), "incident-type term"),
+    (re.compile(r"\binsider\s+threat\b", re.IGNORECASE), "incident-type term"),
+    (re.compile(r"\bincident\s+type\b", re.IGNORECASE), "case-typing term"),
+    (re.compile(r"\bcase\s+type\b", re.IGNORECASE), "case-typing term"),
+    (re.compile(r"\bactionable\s+investigation\s+category\b", re.IGNORECASE), "case-typing term"),
+)
+
+GENERIC_NUMERIC_LABEL_RE = re.compile(
+    r"^(Application|Cloud|Email|File|Host|Identity|Network)\s+"
+    r"(detect|validate|classify|scope|correlate|attribute|impact|terminal)\s+\d+$"
 )
 
 
@@ -221,10 +242,29 @@ def validate_and_measure(
 
         if not isinstance(label, str) or not label.strip():
             errors.append(f"{context}.label must be a non-empty string.")
+        else:
+            if GENERIC_NUMERIC_LABEL_RE.fullmatch(label.strip()):
+                errors.append(
+                    f"{context}.label must not be a generic numeric template; use a domain-prefixed technical signal label (for example: 'Email: Attachment evidence - Collaboration artifacts')."
+                )
+
+        # Core vs Overlay semantic contract enforcement:
+        # ban incident typing / case-typing semantics from Core node text/labels.
+        if isinstance(text, str) and isinstance(label, str):
+            haystack = f"{text}\n{label}"
+            for pattern, pattern_kind in CORE_BANNED_SEMANTIC_PATTERNS:
+                if pattern.search(haystack):
+                    errors.append(
+                        f"{context} contains {pattern_kind} not allowed in Core (move to overlays): {pattern.pattern!r}"
+                    )
 
         if category not in DOMAINS:
             errors.append(f"{context}.category must be one of {sorted(DOMAINS)}.")
             continue
+        if isinstance(label, str):
+            expected_prefix = f"{category}:"
+            if not label.strip().startswith(expected_prefix):
+                errors.append(f"{context}.label must start with '{expected_prefix}' for graph readability.")
 
         if archetype not in ARCHETYPES:
             errors.append(f"{context}.archetype must be one of {ARCHETYPES}.")
@@ -442,12 +482,16 @@ def validate_and_measure(
     max_fanin = 0
     fanin_violations: list[str] = []
     fanin_exception_nodes_used: list[str] = []
+    terminal_node_set = set(terminal_nodes)
     for node_id in sorted(node_by_id, key=node_numeric_id):
         fanin = incoming_count.get(node_id, 0)
         max_fanin = max(max_fanin, fanin)
-        limit = FANIN_EXCEPTION_LIMIT if node_id in fanin_exception_set else FANIN_DEFAULT_LIMIT
-        if node_id in fanin_exception_set and fanin > FANIN_DEFAULT_LIMIT:
-            fanin_exception_nodes_used.append(node_id)
+        if node_id in terminal_node_set:
+            limit = FANIN_TERMINAL_LIMIT
+        else:
+            limit = FANIN_EXCEPTION_LIMIT if node_id in fanin_exception_set else FANIN_DEFAULT_LIMIT
+            if node_id in fanin_exception_set and fanin > FANIN_DEFAULT_LIMIT:
+                fanin_exception_nodes_used.append(node_id)
         if fanin > limit:
             fanin_violations.append(f"{node_id} (fanin={fanin}, limit={limit})")
 
@@ -479,6 +523,7 @@ def validate_and_measure(
         "crossDomainRatioMin": CROSS_DOMAIN_RATIO_MIN,
         "fanInDefaultLimit": FANIN_DEFAULT_LIMIT,
         "fanInExceptionLimit": FANIN_EXCEPTION_LIMIT,
+        "fanInTerminalLimit": FANIN_TERMINAL_LIMIT,
         "maxFanIn": max_fanin,
         "fanInExceptionNodeIds": sorted(fanin_exception_set, key=node_numeric_id),
         "fanInExceptionNodesUsed": sorted(fanin_exception_nodes_used, key=node_numeric_id),
